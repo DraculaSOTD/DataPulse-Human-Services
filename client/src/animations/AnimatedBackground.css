@@ -1,0 +1,50 @@
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a192f 0%, #112240 50%, #0a192f 100%);
+}
+
+.background-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.gradient-overlay[data-theme="default"] {
+  background: radial-gradient(circle at 50% 50%, rgba(15, 213, 206, 0.05) 0%, transparent 50%);
+}
+
+.gradient-overlay[data-theme="problem"] {
+  background: radial-gradient(circle at 30% 40%, rgba(255, 99, 71, 0.08) 0%, transparent 60%);
+}
+
+.gradient-overlay[data-theme="solution"] {
+  background: radial-gradient(circle at 70% 50%, rgba(60, 179, 113, 0.08) 0%, transparent 60%);
+}
+
+.gradient-overlay[data-theme="acceleration"] {
+  background: radial-gradient(circle at 50% 60%, rgba(138, 43, 226, 0.08) 0%, transparent 60%);
+}
+
+@media (max-width: 768px) {
+  .animated-background {
+    background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+  }
+}

@@ -1,0 +1,262 @@
+.about {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.about-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+}
+
+.about-hero-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-intro {
+  font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+  color: var(--light-slate);
+  margin: 2rem 0;
+  line-height: 1.8;
+}
+
+.about-description {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--slate);
+  line-height: 1.8;
+}
+
+/* Experience Banner */
+.experience-banner {
+  background: linear-gradient(135deg, rgba(15, 213, 206, 0.1), rgba(60, 179, 113, 0.1));
+  padding: 3rem 0;
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.experience-content h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+.experience-content p {
+  font-size: 1.2rem;
+  color: var(--light-slate);
+}
+
+/* Philosophy Section */
+.philosophy-section {
+  background: rgba(17, 34, 64, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.philosophy-subtitle {
+  text-align: center;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  color: var(--light-slate);
+  margin: 2rem auto 4rem;
+  max-width: 700px;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.philosophy-card {
+  background: rgba(17, 34, 64, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(60, 179, 113, 0.2);
+  border-radius: 16px;
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.philosophy-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(60, 179, 113, 0.4);
+  box-shadow: 0 15px 40px rgba(60, 179, 113, 0.2);
+}
+
+.pillar-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--secondary-green), var(--primary-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+.philosophy-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--lightest-slate);
+}
+
+.philosophy-card p {
+  color: var(--slate);
+  line-height: 1.8;
+}
+
+/* Track Record Section */
+.track-record-section {
+  background: linear-gradient(180deg, rgba(17, 34, 64, 0.3) 0%, transparent 100%);
+}
+
+.track-record-intro {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--light-slate);
+  margin: 0 auto 4rem;
+  max-width: 700px;
+}
+
+.track-record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.track-record-card {
+  background: rgba(17, 34, 64, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(15, 213, 206, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.track-record-card:hover {
+  border-color: rgba(15, 213, 206, 0.4);
+  box-shadow: 0 10px 30px rgba(15, 213, 206, 0.2);
+}
+
+.project-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 213, 206, 0.1);
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  color: var(--primary-cyan);
+}
+
+.project-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.track-record-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  color: var(--lightest-slate);
+}
+
+.track-record-card p {
+  color: var(--slate);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* Values Section */
+.values-section {
+  background: linear-gradient(135deg, rgba(60, 179, 113, 0.1), rgba(15, 213, 206, 0.1));
+  text-align: center;
+}
+
+.values-content h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 3rem;
+}
+
+.values-grid {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+}
+
+.value-item h3 {
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, var(--secondary-green), var(--primary-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.value-item p {
+  color: var(--slate);
+  font-size: 1rem;
+}
+
+.values-description {
+  font-size: 1.15rem;
+  color: var(--light-slate);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* CTA Section */
+.about-cta {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(15, 213, 206, 0.1));
+  text-align: center;
+}
+
+.about-cta .cta-content h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 1rem;
+}
+
+.about-cta .cta-content p {
+  font-size: 1.2rem;
+  color: var(--light-slate);
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding-top: 100px;
+  }
+
+  .philosophy-grid,
+  .track-record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .values-grid {
+    gap: 2rem;
+  }
+
+  .value-item h3 {
+    font-size: 2.5rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
