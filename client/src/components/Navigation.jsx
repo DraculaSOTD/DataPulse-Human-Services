@@ -17,10 +17,6 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location]);
-
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
@@ -116,6 +112,7 @@ const Navigation = () => {
                   <Link
                     to={link.path}
                     className={location.pathname === link.path ? 'active' : ''}
+                    onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}
                   </Link>
