@@ -62,6 +62,13 @@ const About = () => {
     }
   ];
 
+  const partners = [
+    'Samsung', 'Nokia', 'Sony Ericsson', 'TomTom', 'Garmin', 'Montblanc',
+    'Amazon', 'Texas Instruments', 'Analog Devices', 'Qualcomm',
+    'Maxim Integrated', 'Osram', 'LG Innotek', '1Life',
+    'MMI Holdings', 'Unisure', 'Hannover Re', 'Abacus Insurance', 'Precium'
+  ];
+
   return (
     <div className="about">
       <AnimatedBackground theme="solution" />
@@ -81,8 +88,8 @@ const About = () => {
             </motion.h1>
 
             <motion.p className="about-intro" variants={fadeInUp}>
-              DataPulse AI was founded by <strong>Arthur Procopos</strong> and <strong>Calvin Nigrini</strong> with
-              a single mission: to make the power of AI and custom software accessible and valuable for
+              DataPulse AI was founded by <strong>Arthur Procopos</strong>, <strong>Calvin Nigrini</strong>, and <strong>Dr. Riaan Conradie (PhD)</strong> with
+              a single mission: to make the power of AI, ML, and custom software accessible and valuable for
               businesses frustrated with the traditional, slow, and expensive development models.
             </motion.p>
 
@@ -106,7 +113,7 @@ const About = () => {
             variants={fadeInUp}
             className="experience-content"
           >
-            <h2>12+ Years of Experience</h2>
+            <h2>25+ Years of Experience</h2>
             <p>Working with startups, private companies, enterprises and public companies</p>
           </motion.div>
         </div>
@@ -160,7 +167,7 @@ const About = () => {
             </motion.h2>
 
             <motion.p className="track-record-intro" variants={fadeInUp}>
-              Over 12 years, we've delivered transformative solutions across industries
+              Over 25 years, we've delivered transformative solutions across industries
             </motion.p>
 
             <div className="track-record-grid">
@@ -220,6 +227,51 @@ const About = () => {
               We don't measure success by lines of code or features delivered, but by the
               tangible value we create for your organization.
             </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="partners-section section-sm">
+        <div className="container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="partners-content"
+          >
+            <h2>Our Experience Includes <span className="gradient-text">Working and Partnering with</span></h2>
+          </motion.div>
+        </div>
+
+        <div className="carousel-container">
+          <motion.div
+            className="carousel-track"
+            animate={{
+              x: [0, -5400]
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 55,
+                ease: "linear"
+              }
+            }}
+          >
+            {/* First set of partners */}
+            {partners.map((partner, index) => (
+              <div key={`partner-1-${index}`} className="partner-card">
+                <span className="partner-name">{partner}</span>
+              </div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {partners.map((partner, index) => (
+              <div key={`partner-2-${index}`} className="partner-card">
+                <span className="partner-name">{partner}</span>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>

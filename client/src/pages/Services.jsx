@@ -72,7 +72,7 @@ const Services = () => {
             </motion.h1>
 
             <motion.p className="services-subtitle" variants={fadeInUp}>
-              For a flat monthly fee of <strong>$13,500</strong>, you get everything you need
+              For a flat monthly fee starting from <strong>$13,500</strong>, you get everything you need
               to turn an idea into a high-value, production-ready application.
             </motion.p>
 
@@ -101,6 +101,7 @@ const Services = () => {
               <div className="price-header">
                 <h3>Tech & ML Partnership</h3>
                 <div className="price">
+                  <span className="starting-from">Starting from</span>
                   <span className="currency">$</span>
                   <span className="amount">13,500</span>
                   <span className="period">/month</span>
@@ -217,7 +218,7 @@ const Services = () => {
 
               <div className="comparison-row">
                 <div className="comparison-cell label">Monthly Cost</div>
-                <div className="comparison-cell highlight">$13,500</div>
+                <div className="comparison-cell highlight">Starting from $13,500</div>
                 <div className="comparison-cell">$36,122</div>
                 <div className="comparison-cell">$52,973</div>
               </div>

@@ -166,7 +166,7 @@ const AnimatedBackground = ({ theme = 'default' }) => {
       ctx.fillStyle = 'rgba(10, 25, 47, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      drawCircuitLines();
+      // drawCircuitLines(); // Grid removed for cleaner look
       drawWaves();
       drawConnections();
 
