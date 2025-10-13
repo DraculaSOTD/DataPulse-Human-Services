@@ -379,7 +379,10 @@
 
 @media (max-width: 768px) {
   .about-hero {
-    padding-top: 100px;
+    padding-top: 140px !important;
+    padding-bottom: 3rem;
+    align-items: flex-start;
+    min-height: auto;
   }
 
   .team-grid {
