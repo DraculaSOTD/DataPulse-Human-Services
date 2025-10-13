@@ -62,11 +62,30 @@ const About = () => {
     }
   ];
 
+  const teamMembers = [
+    {
+      name: 'Arthur Procopos',
+      title: 'Co-founder and Director',
+      photo: '/team/arthur.jpg'
+    },
+    {
+      name: 'Calvin Nigrini',
+      title: 'Co-founder and Director',
+      photo: '/team/calvin.jpg'
+    },
+    {
+      name: 'Dr. Riaan Conradie',
+      title: 'Co-founder',
+      photo: '/team/riaan.jpg'
+    }
+  ];
+
   const partners = [
     'Samsung', 'Nokia', 'Sony Ericsson', 'TomTom', 'Garmin', 'Montblanc',
     'Amazon', 'Texas Instruments', 'Analog Devices', 'Qualcomm',
     'Maxim Integrated', 'Osram', 'LG Innotek', '1Life',
-    'MMI Holdings', 'Unisure', 'Hannover Re', 'Abacus Insurance', 'Precium'
+    'MMI Holdings', 'Unisure', 'Hannover Re', 'Abacus Insurance', 'Precium',
+    'Advanced Health Intelligence (AHI)'
   ];
 
   return (
@@ -99,6 +118,34 @@ const About = () => {
               powerful technological leverage to deliver real business outcomes, not just reports and
               recommendations.
             </motion.p>
+
+            {/* Team Members Grid */}
+            <motion.div className="team-grid" variants={fadeInUp}>
+              {teamMembers.map((member, index) => {
+                const photoClass = member.name === 'Arthur Procopos'
+                  ? 'team-photo team-photo-arthur'
+                  : member.name === 'Calvin Nigrini'
+                  ? 'team-photo team-photo-calvin'
+                  : 'team-photo';
+
+                return (
+                  <motion.div
+                    key={index}
+                    className="team-card"
+                    variants={fadeInUp}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <div className="team-photo-container">
+                      <img src={member.photo} alt={member.name} className={photoClass} />
+                    </div>
+                    <div className="team-info">
+                      <h3 className="team-name">{member.name}</h3>
+                      <p className="team-title">{member.title}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           </motion.div>
         </div>
       </section>
