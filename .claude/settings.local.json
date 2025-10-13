@@ -8,7 +8,19 @@
       "Bash(npm install:*)",
       "Bash(mkdir:*)",
       "Bash(npm run dev:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate .gitignore and remove node_modules from version control\n\n- Added node_modules/ to .gitignore\n- Removed all node_modules files from git tracking (6,379 files)\n- node_modules will now be excluded from future commits\n\nGenerated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(chmod:*)",
+      "Bash(netstat:*)",
+      "Bash(ss:*)",
+      "Bash(kill:*)",
+      "Bash(pstree:*)",
+      "Bash(ps:*)",
+      "Bash(pm2 list:*)",
+      "Bash(pm2 stop:*)",
+      "Bash(timeout 10 npm run dev:*)"
     ],
     "deny": [],
     "ask": []
