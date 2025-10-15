@@ -20,7 +20,8 @@
       "Bash(ps:*)",
       "Bash(pm2 list:*)",
       "Bash(pm2 stop:*)",
-      "Bash(timeout 10 npm run dev:*)"
+      "Bash(timeout 10 npm run dev:*)",
+      "Read(//home/calvin/Websites/**)"
     ],
     "deny": [],
     "ask": []
