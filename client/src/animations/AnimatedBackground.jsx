@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import './AnimatedBackground.css';
 
 const AnimatedBackground = ({ theme = 'default' }) => {
@@ -131,42 +131,12 @@ const AnimatedBackground = ({ theme = 'default' }) => {
       }
     };
 
-    // Circuit board lines
-    const drawCircuitLines = () => {
-      const lineColors = {
-        default: 'rgba(15, 213, 206, 0.05)',
-        problem: 'rgba(255, 99, 71, 0.05)',
-        solution: 'rgba(60, 179, 113, 0.05)',
-        acceleration: 'rgba(138, 43, 226, 0.05)'
-      };
-
-      ctx.strokeStyle = lineColors[theme] || lineColors.default;
-      ctx.lineWidth = 1;
-
-      // Horizontal lines
-      for (let y = 0; y < canvas.height; y += 100) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
-
-      // Vertical lines
-      for (let x = 0; x < canvas.width; x += 100) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-    };
-
     // Animation loop
     let animationId;
     const animate = () => {
       ctx.fillStyle = 'rgba(10, 25, 47, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // drawCircuitLines(); // Grid removed for cleaner look
       drawWaves();
       drawConnections();
 

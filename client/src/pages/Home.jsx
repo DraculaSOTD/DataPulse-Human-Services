@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
+import SEO from '../components/SEO';
+import { fadeInUp, staggerContainer } from '../constants/animations';
+import { CONTACT_EMAILS } from '../constants/config';
+import { getOrganizationSchema, getWebPageSchema } from '../utils/structuredData';
 import './Home.css';
 
 const Home = () => {
   const [currentTheme, setCurrentTheme] = useState('default');
-  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,23 +31,15 @@ const Home = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
   return (
     <div className="home">
+      <SEO
+        title="DataPulse AI - From Backlog to Bottom Line, Faster"
+        description="Expert AI and software development team powered by our proprietary Acceleration Engine. Deliver critical projects with unparalleled speed, predictability, and value. Transform your innovation backlog into results."
+        keywords="AI development, software development, machine learning, acceleration engine, innovation delivery, tech partnership, startup development, prototype development"
+        ogType="website"
+        structuredData={[getOrganizationSchema(), getWebPageSchema('home', 'DataPulse AI - From Backlog to Bottom Line, Faster', 'Expert AI and software development team powered by our proprietary Acceleration Engine.')]}
+      />
       <AnimatedBackground theme={currentTheme} />
 
       {/* Hero Section */}
@@ -96,7 +91,7 @@ const Home = () => {
                 <p>Prototype Speed</p>
               </div>
               <div className="stat">
-                <h3>12+</h3>
+                <h3>25+</h3>
                 <p>Years Experience</p>
               </div>
             </motion.div>
@@ -337,7 +332,7 @@ const Home = () => {
               <Link to="/services" className="btn btn-primary">
                 View Pricing
               </Link>
-              <a href="mailto:arthur@datapulseai.co" className="btn btn-secondary">
+              <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-secondary">
                 Contact Us
               </a>
             </div>

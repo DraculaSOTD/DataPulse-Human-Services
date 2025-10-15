@@ -243,6 +243,8 @@
 /* Acceleration Section */
 .acceleration-section {
   background: linear-gradient(180deg, rgba(60, 179, 113, 0.05) 0%, rgba(138, 43, 226, 0.08) 100%);
+  position: relative;
+  z-index: 1;
 }
 
 .acceleration-content {
@@ -327,11 +329,14 @@
 .acceleration-card {
   background: rgba(17, 34, 64, 0.6);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(138, 43, 226, 0.2);
   border-radius: 16px;
   padding: 2.5rem;
   text-align: left;
   transition: all 0.3s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .acceleration-card:hover {
@@ -419,5 +424,22 @@
   .acceleration-quote {
     padding-left: 1rem;
     font-size: 1.1rem;
+  }
+
+  .acceleration-section {
+    overflow: visible;
+    min-height: auto;
+  }
+
+  .acceleration-card {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(17, 34, 64, 0.8);
+    padding: 2rem;
+  }
+
+  .step-circle {
+    width: 120px;
+    height: 120px;
   }
 }

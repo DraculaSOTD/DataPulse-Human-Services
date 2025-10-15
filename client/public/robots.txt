@@ -1,0 +1,24 @@
+# www.robotstxt.org/
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin or private routes (if any in future)
+# Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://datapulseai.co/sitemap.xml
+
+# Specific crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl-delay for bots (in seconds) - optional
+# Crawl-delay: 1

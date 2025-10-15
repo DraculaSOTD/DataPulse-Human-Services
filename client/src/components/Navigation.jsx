@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CONTACT_EMAILS } from '../constants/config';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -70,7 +71,7 @@ const Navigation = () => {
         </ul>
 
         <motion.a
-          href="mailto:arthur@datapulseai.co"
+          href={`mailto:${CONTACT_EMAILS.PRIMARY}`}
           className="btn btn-primary nav-cta desktop-cta"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -124,7 +125,7 @@ const Navigation = () => {
                 transition={{ delay: 0.4 }}
               >
                 <a
-                  href="mailto:arthur@datapulseai.co"
+                  href={`mailto:${CONTACT_EMAILS.PRIMARY}`}
                   className="btn btn-primary"
                 >
                   Get Started

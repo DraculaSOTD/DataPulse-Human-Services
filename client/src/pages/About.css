@@ -353,6 +353,23 @@
   white-space: nowrap;
 }
 
+/* Partner Logo Styles */
+.partner-logo {
+  max-width: 100%;
+  max-height: 60px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.partner-card:hover .partner-logo {
+  opacity: 1;
+  filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(15, 213, 206, 0.5));
+}
+
 /* CTA Section */
 .about-cta {
   background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(15, 213, 206, 0.1));
@@ -421,6 +438,10 @@
 
   .partner-name {
     font-size: 0.95rem;
+  }
+
+  .partner-logo {
+    max-height: 50px;
   }
 
   .cta-buttons {

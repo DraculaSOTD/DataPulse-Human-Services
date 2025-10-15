@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedBackground from '../animations/AnimatedBackground';
+import SEO from '../components/SEO';
+import { fadeInUp, staggerContainer } from '../constants/animations';
+import { CONTACT_EMAILS } from '../constants/config';
+import { getWebPageSchema } from '../utils/structuredData';
 import './Contact.css';
 
 const Contact = () => {
@@ -51,30 +55,21 @@ const Contact = () => {
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Unable to send message. Please email us directly at arthur@datapulseai.co'
+        message: `Unable to send message. Please email us directly at ${CONTACT_EMAILS.PRIMARY}`
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
   return (
     <div className="contact">
+      <SEO
+        title="Contact Us - DataPulse AI"
+        description="Get in touch with DataPulse AI to transform your innovation backlog into delivered results. We typically respond within 24 hours. Flexible engagement models for every stage."
+        keywords="contact DataPulse AI, AI development inquiry, software development consultation, tech partnership contact, startup development contact"
+        structuredData={[getWebPageSchema('contact', 'Contact Us - DataPulse AI', 'Get in touch to discuss how we can accelerate your innovation delivery.')]}
+      />
       <AnimatedBackground theme="default" />
 
       {/* Hero Section */}
@@ -128,8 +123,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3>Email</h3>
-                    <a href="mailto:arthur@datapulseai.co">arthur@datapulseai.co</a>
-                    <a href="mailto:info@datapulseai.co">info@datapulseai.co</a>
+                    <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`}>{CONTACT_EMAILS.PRIMARY}</a>
+                    <a href={`mailto:${CONTACT_EMAILS.INFO}`}>{CONTACT_EMAILS.INFO}</a>
                   </div>
                 </div>
 
@@ -255,11 +250,11 @@ const Contact = () => {
             <h2>Prefer Email?</h2>
             <p>You can reach us directly at:</p>
             <div className="email-links">
-              <a href="mailto:arthur@datapulseai.co" className="btn btn-secondary">
-                arthur@datapulseai.co
+              <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-secondary">
+                {CONTACT_EMAILS.PRIMARY}
               </a>
-              <a href="mailto:info@datapulseai.co" className="btn btn-secondary">
-                info@datapulseai.co
+              <a href={`mailto:${CONTACT_EMAILS.INFO}`} className="btn btn-secondary">
+                {CONTACT_EMAILS.INFO}
               </a>
             </div>
           </motion.div>

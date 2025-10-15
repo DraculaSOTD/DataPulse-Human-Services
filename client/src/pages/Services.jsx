@@ -1,25 +1,13 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
+import SEO from '../components/SEO';
+import { fadeInUp, staggerContainer } from '../constants/animations';
+import { CONTACT_EMAILS } from '../constants/config';
+import { getServiceSchema, getWebPageSchema } from '../utils/structuredData';
 import './Services.css';
 
 const Services = () => {
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
   const services = [
     {
       title: 'Strategic Design & Prototyping',
@@ -55,6 +43,12 @@ const Services = () => {
 
   return (
     <div className="services">
+      <SEO
+        title="Services & Pricing - DataPulse AI"
+        description="Your on-demand AI & software squad. Flat monthly fee starting from $13,500 for dedicated team, full-stack development, AI expertise, and 100% IP ownership. No hidden fees."
+        keywords="AI development services, software development pricing, tech partnership, machine learning services, full-stack development, startup development, software as a service"
+        structuredData={[getServiceSchema(), getWebPageSchema('services', 'Services & Pricing - DataPulse AI', 'Your on-demand AI & software squad for a predictable monthly investment.')]}
+      />
       <AnimatedBackground theme="acceleration" />
 
       {/* Hero Section */}
@@ -126,7 +120,7 @@ const Services = () => {
               </div>
 
               <motion.div className="price-cta" variants={fadeInUp}>
-                <a href="mailto:arthur@datapulseai.co" className="btn btn-primary">
+                <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-primary">
                   Get Started Today
                 </a>
               </motion.div>
@@ -184,7 +178,7 @@ const Services = () => {
               We invest our deep technical expertise in exchange for realistic royalty agreements,
               helping you accelerate your growth and achieve your vision when cash flow is critical.
             </p>
-            <a href="mailto:arthur@datapulseai.co?subject=Startup Partnership Inquiry" className="btn btn-secondary">
+            <a href={`mailto:${CONTACT_EMAILS.PRIMARY}?subject=Startup Partnership Inquiry`} className="btn btn-secondary">
               Learn About Startup Partnership
             </a>
           </motion.div>
@@ -276,7 +270,7 @@ const Services = () => {
             <h2>Ready to Get Started?</h2>
             <p>Let's transform your innovation backlog into delivered results.</p>
             <div className="cta-buttons">
-              <a href="mailto:arthur@datapulseai.co" className="btn btn-primary">
+              <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-primary">
                 Schedule a Call
               </a>
               <Link to="/about" className="btn btn-secondary">

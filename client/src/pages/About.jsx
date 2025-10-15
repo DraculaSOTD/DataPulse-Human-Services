@@ -1,25 +1,12 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
+import SEO from '../components/SEO';
+import { fadeInUp, staggerContainer } from '../constants/animations';
+import { getPersonSchema, getWebPageSchema } from '../utils/structuredData';
 import './About.css';
 
 const About = () => {
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
   const philosophyPillars = [
     {
       title: 'Pragmatic Innovation',
@@ -81,15 +68,41 @@ const About = () => {
   ];
 
   const partners = [
-    'Samsung', 'Nokia', 'Sony Ericsson', 'TomTom', 'Garmin', 'Montblanc',
-    'Amazon', 'Texas Instruments', 'Analog Devices', 'Qualcomm',
-    'Maxim Integrated', 'Osram', 'LG Innotek', '1Life',
-    'MMI Holdings', 'Unisure', 'Hannover Re', 'Abacus Insurance', 'Precium',
-    'Advanced Health Intelligence (AHI)'
+    { name: 'Samsung', logo: '/partners/samsung.png' },
+    { name: 'Nokia', logo: '/partners/nokia.png' },
+    { name: 'Sony Ericsson', logo: '/partners/sony-ericsson.png' },
+    { name: 'TomTom', logo: '/partners/tomtom.png' },
+    { name: 'Garmin', logo: '/partners/garmin.png' },
+    { name: 'Montblanc', logo: '/partners/montblanc.png' },
+    { name: 'Amazon', logo: '/partners/amazon.png' },
+    { name: 'Texas Instruments', logo: '/partners/texas-instruments.png' },
+    { name: 'Analog Devices', logo: '/partners/analog-devices.png' },
+    { name: 'Qualcomm', logo: '/partners/qualcomm.png' },
+    { name: 'Maxim Integrated', logo: '/partners/maxim-integrated.png' },
+    { name: 'Osram', logo: '/partners/osram.png' },
+    { name: 'LG Innotek', logo: '/partners/lg-innotek.png' },
+    { name: '1Life', logo: '/partners/1life.png' },
+    { name: 'MMI Holdings', logo: '/partners/mmi-holdings.png' },
+    { name: 'Unisure', logo: '/partners/unisure.png' },
+    { name: 'Hannover Re', logo: '/partners/hannover-re.png' },
+    { name: 'Abacus Insurance', logo: '/partners/abacus-insurance.png' },
+    { name: 'Precium', logo: '/partners/precium.png' },
+    { name: 'Advanced Health Intelligence', logo: '/partners/ahi.png' }
   ];
 
   return (
     <div className="about">
+      <SEO
+        title="About Us - DataPulse AI"
+        description="Founded by Arthur Procopos, Calvin Nigrini, and Dr. Riaan Conradie. Over 25 years of experience delivering transformative AI and software solutions. We're builders, not just consultants."
+        keywords="DataPulse AI team, AI development company, machine learning experts, software development team, tech consulting, innovation delivery"
+        structuredData={[
+          getPersonSchema('Arthur Procopos', 'Co-founder and Director'),
+          getPersonSchema('Calvin Nigrini', 'Co-founder and Director'),
+          getPersonSchema('Dr. Riaan Conradie', 'Co-founder'),
+          getWebPageSchema('about', 'About Us - DataPulse AI', 'Learn about DataPulse AI\'s team, philosophy, and track record.')
+        ]}
+      />
       <AnimatedBackground theme="solution" />
 
       {/* Hero Section */}
@@ -310,13 +323,23 @@ const About = () => {
             {/* First set of partners */}
             {partners.map((partner, index) => (
               <div key={`partner-1-${index}`} className="partner-card">
-                <span className="partner-name">{partner}</span>
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="partner-logo"
+                  loading="lazy"
+                />
               </div>
             ))}
             {/* Duplicate set for seamless loop */}
             {partners.map((partner, index) => (
               <div key={`partner-2-${index}`} className="partner-card">
-                <span className="partner-name">{partner}</span>
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="partner-logo"
+                  loading="lazy"
+                />
               </div>
             ))}
           </motion.div>

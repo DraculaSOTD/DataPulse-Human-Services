@@ -23,9 +23,10 @@
   },
   "homepage": "https://github.com/DraculaSOTD/DataPulse-Human-Services#readme",
   "dependencies": {
-    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "express": "^5.1.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.9"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
