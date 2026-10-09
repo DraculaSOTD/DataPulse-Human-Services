@@ -63,7 +63,7 @@ const UseCases = () => {
         keywords="AI use cases, machine learning case studies, data science projects, GenAI claims, propensity models, predictive modelling, AI track record"
         structuredData={[getWebPageSchema('/use-cases', 'Use Cases - DataPulse AI', 'Our track record implementing data, ML, and AI solutions across industries.')]}
       />
-      <AnimatedBackground theme="solution" />
+      <AnimatedBackground />
 
       {/* Track Record Section */}
       <section className="track-record-section section">

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
@@ -8,35 +7,12 @@ import { getOrganizationSchema, getWebPageSchema } from '../utils/structuredData
 import './Home.css';
 
 const Home = () => {
-  const [currentTheme, setCurrentTheme] = useState('default');
-
   const indicators = [
     { value: '80%', label: 'Work Automated' },
     { value: '15min', label: 'Prototype Speed' },
-    { value: '17+', label: 'Years Experience' },
-    { value: '7%', label: 'Increase in Revenue' }
+    { value: '7%', label: 'Month 1 Increase in Revenue' },
+    { value: '80%', label: 'Prediction Accuracy on Payment Collection' }
   ];
-
-  useEffect(() => {
-    // Four sections now: hero, partnership, problem, offerings power.
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-
-      if (scrollPosition < windowHeight * 0.8) {
-        setCurrentTheme('default');
-      } else if (scrollPosition < windowHeight * 1.8) {
-        setCurrentTheme('solution');
-      } else if (scrollPosition < windowHeight * 2.8) {
-        setCurrentTheme('problem');
-      } else {
-        setCurrentTheme('acceleration');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <div className="home">
@@ -47,7 +23,7 @@ const Home = () => {
         ogType="website"
         structuredData={[getOrganizationSchema(), getWebPageSchema('/', 'DataPulse AI - Human and Data Science Consultancy', 'We partner with leaders on AI and technology strategies.')]}
       />
-      <AnimatedBackground theme={currentTheme} />
+      <AnimatedBackground />
 
       {/* Hero Section — animation and pill only */}
       <section className="hero-section section">
@@ -127,8 +103,8 @@ const Home = () => {
             variants={staggerContainer}
             className="problem-content"
           >
-            <motion.h2 variants={fadeInUp} className="section-title">
-              Great ideas are getting <span className="gradient-text">stuck...</span>
+            <motion.h2 variants={fadeInUp} className="subsection-title">
+              Strategic Initiatives are getting <span className="gradient-text">stuck...</span>
             </motion.h2>
 
             <div className="problem-cards">
@@ -197,8 +173,9 @@ const Home = () => {
             </motion.h2>
 
             <motion.p className="acceleration-subtitle" variants={fadeInUp}>
-              How do we deliver production-ready applications in a fraction of the time?
-              The answer lies in our proprietary platforms, <strong>Ava and Ada</strong>.
+              We built our own LLM AI software development and Data Science and Machine
+              Learning (DSML) platform to enhance our workflows and offerings with the
+              technology we help organisations design, build and implement.
             </motion.p>
 
             <motion.div className="acceleration-visual" variants={fadeInUp}>
@@ -225,44 +202,59 @@ const Home = () => {
                   <div className="step-circle">
                     <h4>Production Ready</h4>
                   </div>
-                  <p>Full-stack prototype in as little as 15 minutes</p>
+                  <p>Code, ML and AI deployments in as little as 2 weeks.</p>
                 </div>
               </div>
             </motion.div>
 
             <motion.div className="acceleration-features" variants={fadeInUp}>
-              <div className="acceleration-card">
-                <h3>Automates the Heavy Lifting</h3>
-                <p>
-                  Ava and Ada automate up to 80% of the foundational work in building new
-                  applications. From generating clean, secure code to setting up database
-                  structures and creating testing harnesses.
+              <div className="acceleration-card platform-card">
+                <h3>Ava</h3>
+                <p className="platform-role">
+                  Proprietary LLM AI powered software development platform
                 </p>
+
+                <p className="coming-soon-label">Coming Soon</p>
+                <ul>
+                  <li>
+                    On-prem private LLM model powering Ava — no more token costs for AI
+                    powered software development workflows.
+                  </li>
+                  <li>
+                    Includes Product Planning and Management, Architecture, Design,
+                    Development, Data, and Testing tools and agents for your entire team
+                    from Product Manager to QA and Testers.
+                  </li>
+                  <li>
+                    Deliver code faster to your clients or improve internal software
+                    development productivity.
+                  </li>
+                  <li>
+                    Full workflow reporting, track what the LLM does and what your human
+                    team does. Bridging the ownership gap.
+                  </li>
+                </ul>
               </div>
 
-              <div className="acceleration-card">
-                <h3>Ensures Quality and Consistency</h3>
-                <p>
-                  By standardizing the core architecture, our engine ensures every application
-                  is secure, scalable, and adheres to the highest quality standards from day one.
-                  This eliminates technical debt before it starts.
+              <div className="acceleration-card platform-card">
+                <h3>Ada</h3>
+                <p className="platform-role">
+                  Our proprietary Data Science and Machine Learning (DSML) Platform
                 </p>
-              </div>
 
-              <div className="acceleration-card">
-                <h3>Frees Experts to Focus on Value</h3>
-                <p>
-                  With the engine handling the groundwork, our world-class engineers, data
-                  scientists, and designers dedicate their time to solving your unique business
-                  challenges and crafting the perfect user experience.
-                </p>
+                <p className="coming-soon-label">Coming Soon</p>
+                <ul>
+                  <li>
+                    On-prem private DSML Platform — no more usage and subscription costs
+                    for data sciences and machine learning tools.
+                  </li>
+                  <li>Train and deploy 20+ ML models.</li>
+                  <li>Transform, clean, and generate data.</li>
+                  <li>Manage all integrations, data pipelines — inputs and outputs.</li>
+                  <li>MLOps, Governance, and Compliance first platform.</li>
+                </ul>
               </div>
             </motion.div>
-
-            <motion.blockquote className="acceleration-quote" variants={fadeInUp}>
-              The Acceleration Engine is our secret sauce. It's the tangible, technological
-              advantage that allows us to make a bold promise—and keep it.
-            </motion.blockquote>
           </motion.div>
         </div>
       </section>
@@ -277,7 +269,7 @@ const Home = () => {
             variants={fadeInUp}
             className="cta-content"
           >
-            <h2>Let's achieve your AI strategies together</h2>
+            <h2>Let's create together</h2>
             <div className="cta-buttons">
               <Link to="/about" className="btn btn-primary">
                 Our Story

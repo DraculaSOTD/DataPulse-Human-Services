@@ -43,8 +43,9 @@
   border-top: 1px solid var(--border);
 }
 
+/* Alternating tint down the page: analytics, software, examples, startup */
 .software-section,
-.examples-section {
+.startup-section {
   background: rgba(255, 255, 255, 0.015);
 }
 
@@ -145,47 +146,71 @@
   margin-bottom: 2rem;
 }
 
-/* Examples of what we do */
+/* Examples of what we do — industry filter chips */
+.industry-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Selection inverts to white-on-black rather than shifting hue, so the
+   active chip is unmistakable in a greyscale system. */
+.industry-chip {
+  padding: 0.5rem 1.125rem;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.industry-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.industry-chip[aria-pressed="true"] {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--black);
+}
+
+/* Example tiles */
 .examples-grid {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--surface);
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
 }
 
 .example-item {
-  position: relative;
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  padding: 1.125rem 1.5rem 1.125rem 2.75rem;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border);
-  transition: all 0.2s ease;
-}
-
-.example-item::before {
-  content: '';
-  position: absolute;
-  left: 1.5rem;
-  top: 1.65rem;
-  width: 5px;
-  height: 5px;
-  background: var(--grey-mid);
-  transition: background 0.2s ease;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: var(--transition);
 }
 
 .example-item:hover {
-  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.example-title {
+  font-size: 1.0625rem;
+  margin-bottom: 0.75rem;
   color: var(--text-primary);
 }
 
-.example-item:hover::before {
-  background: var(--white);
+.example-detail {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
 /* CTA */
@@ -277,9 +302,5 @@
     letter-spacing: 0.14em;
     color: var(--grey-mid);
     margin-bottom: 0.5rem;
-  }
-
-  .example-item {
-    border-right: none;
   }
 }

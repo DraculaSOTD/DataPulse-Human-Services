@@ -70,7 +70,7 @@ const Contact = () => {
         keywords="contact DataPulse AI, AI development inquiry, software development consultation, tech partnership contact, startup development contact"
         structuredData={[getWebPageSchema('/contact', 'Contact Us - DataPulse AI', 'Get in touch to discuss how we can accelerate your innovation delivery.')]}
       />
-      <AnimatedBackground theme="default" />
+      <AnimatedBackground />
 
       {/* Hero Section */}
       <section className="contact-hero section">
@@ -237,29 +237,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="contact-cta section-sm">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="cta-content"
-          >
-            <h2>Prefer Email?</h2>
-            <p>You can reach us directly at:</p>
-            <div className="email-links">
-              <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-secondary">
-                {CONTACT_EMAILS.PRIMARY}
-              </a>
-              <a href={`mailto:${CONTACT_EMAILS.INFO}`} className="btn btn-secondary">
-                {CONTACT_EMAILS.INFO}
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };

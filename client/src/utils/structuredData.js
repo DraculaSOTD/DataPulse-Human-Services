@@ -39,7 +39,7 @@ export const getServiceSchema = () => ({
     "name": "DataPulse AI"
   },
   "areaServed": "Worldwide",
-  "description": "Advanced analytics, insights, and AI services alongside a design, product, and software track — covering data discovery, ML and AI architecture, model build and training, and software delivery."
+  "description": "Advanced analytics, insights, and AI services alongside design, product, and software services — covering data discovery, ML and AI architecture, model build and training, and software delivery."
 });
 
 // LocalBusiness Schema (for Contact page)

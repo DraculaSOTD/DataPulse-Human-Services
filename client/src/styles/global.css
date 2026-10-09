@@ -132,6 +132,17 @@ select:focus-visible {
   padding: 4rem 0;
 }
 
+/* Subsection heading — a visually demoted section title for a block that
+   sits inside a larger narrative rather than opening one. Stays an <h2>
+   in the markup so the document outline is unaffected. */
+.subsection-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
 /* Eyebrow label — small caps lead-in above section titles */
 .eyebrow {
   display: block;

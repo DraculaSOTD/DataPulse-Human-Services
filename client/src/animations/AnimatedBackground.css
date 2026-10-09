@@ -24,24 +24,8 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  transition: background 0.8s ease;
-}
-
-/* Themes step along the greyscale ramp — position and alpha vary, hue never does */
-.gradient-overlay[data-theme="default"] {
+  /* Single site-wide wash — static on every route, no hue, no scroll response */
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 55%);
-}
-
-.gradient-overlay[data-theme="problem"] {
-  background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
-}
-
-.gradient-overlay[data-theme="solution"] {
-  background: radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.07) 0%, transparent 60%);
-}
-
-.gradient-overlay[data-theme="acceleration"] {
-  background: radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.09) 0%, transparent 65%);
 }
 
 @media (max-width: 768px) {

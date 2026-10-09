@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import './AnimatedBackground.css';
 
-const AnimatedBackground = ({ theme = 'default' }) => {
+const AnimatedBackground = () => {
   const canvasRef = useRef(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -54,16 +53,9 @@ const AnimatedBackground = ({ theme = 'default' }) => {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 
-        // Themes shift along the greyscale ramp rather than by hue,
-        // so sections still read as distinct without colour.
-        const intensity = {
-          default: 0.55,
-          problem: 0.3,
-          solution: 0.7,
-          acceleration: 0.85
-        };
-
-        const alpha = this.opacity * (intensity[theme] ?? intensity.default);
+        // One greyscale level site-wide — the background reads the same on
+        // every page and does not shift as you scroll.
+        const alpha = this.opacity * 0.55;
         ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx.fill();
       }
@@ -82,14 +74,7 @@ const AnimatedBackground = ({ theme = 'default' }) => {
          sum/(sum + clearAlpha). Keep them low: white on black builds up
          far faster than the old cyan-on-navy did, and a heavy band
          behind body copy destroys the contrast the design depends on. */
-      const waveColors = {
-        default: ['rgba(255, 255, 255, 0.005)', 'rgba(255, 255, 255, 0.003)'],
-        problem: ['rgba(255, 255, 255, 0.003)', 'rgba(255, 255, 255, 0.002)'],
-        solution: ['rgba(255, 255, 255, 0.007)', 'rgba(255, 255, 255, 0.004)'],
-        acceleration: ['rgba(255, 255, 255, 0.009)', 'rgba(255, 255, 255, 0.005)']
-      };
-
-      const colors = waveColors[theme] || waveColors.default;
+      const colors = ['rgba(255, 255, 255, 0.005)', 'rgba(255, 255, 255, 0.003)'];
 
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
@@ -113,13 +98,6 @@ const AnimatedBackground = ({ theme = 'default' }) => {
 
     // Draw connections between nearby particles
     const drawConnections = () => {
-      const connectionColors = {
-        default: 'rgba(255, 255, 255, 0.085)',
-        problem: 'rgba(255, 255, 255, 0.045)',
-        solution: 'rgba(255, 255, 255, 0.110)',
-        acceleration: 'rgba(255, 255, 255, 0.135)'
-      };
-
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -130,7 +108,7 @@ const AnimatedBackground = ({ theme = 'default' }) => {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = connectionColors[theme] || connectionColors.default;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.085)';
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -162,12 +140,12 @@ const AnimatedBackground = ({ theme = 'default' }) => {
         cancelAnimationFrame(animationId);
       }
     };
-  }, [dimensions, theme]);
+  }, [dimensions]);
 
   return (
     <div className="animated-background">
       <canvas ref={canvasRef} className="background-canvas" />
-      <div className="gradient-overlay" data-theme={theme} />
+      <div className="gradient-overlay" />
     </div>
   );
 };

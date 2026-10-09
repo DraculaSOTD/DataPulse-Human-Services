@@ -28,87 +28,10 @@
   line-height: 1.8;
 }
 
-/* Experience Banner */
-.experience-banner {
-  background: rgba(255, 255, 255, 0.03);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 3rem 0;
-  margin: 4rem 0;
-  text-align: center;
-}
-
-.experience-content h2 {
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  margin-bottom: 1rem;
-}
-
-.experience-content p {
-  font-size: 1.0625rem;
-  color: var(--text-secondary);
-}
-
-/* Philosophy Section */
-.philosophy-section {
-  background: rgba(255, 255, 255, 0.015);
-  border-top: 1px solid var(--border);
-}
-
-.philosophy-subtitle {
-  text-align: center;
-  font-size: clamp(1.2rem, 2.5vw, 1.625rem);
-  color: var(--text-secondary);
-  font-weight: 500;
-  margin: 2rem auto 4rem;
-  max-width: 700px;
-}
-
-.philosophy-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
-.philosophy-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2.5rem;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.philosophy-card:hover {
-  border-color: var(--border-strong);
-  background: var(--surface-raised);
-}
-
-.pillar-number {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: var(--grey-mid);
-  margin-bottom: 1.25rem;
-}
-
-.philosophy-card h3 {
-  font-size: 1.375rem;
-  margin-bottom: 1rem;
-  color: var(--text-primary);
-}
-
-.philosophy-card p {
-  color: var(--text-secondary);
-  line-height: 1.8;
-  font-size: 1rem;
-}
-
 /* Our Practice / Our Values — shared statement block */
 .statement-block {
   max-width: 860px;
-  margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
 .statement-block h2 {
@@ -137,12 +60,12 @@
 }
 
 .leadership-intro {
-  text-align: center;
+  text-align: left;
   font-size: 1.0625rem;
   color: var(--text-secondary);
   line-height: 1.85;
   max-width: 860px;
-  margin: 0 auto 4rem;
+  margin: 0 0 4rem;
 }
 
 .team-grid {
@@ -262,10 +185,6 @@
   .team-photo-container {
     width: 150px;
     height: 150px;
-  }
-
-  .philosophy-grid {
-    grid-template-columns: 1fr;
   }
 
   .cta-buttons {

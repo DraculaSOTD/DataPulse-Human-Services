@@ -7,21 +7,6 @@ import { getPersonSchema, getWebPageSchema } from '../utils/structuredData';
 import './About.css';
 
 const About = () => {
-  const philosophyPillars = [
-    {
-      title: 'Pragmatic Innovation',
-      description: 'We focus on solving real-world business problems. Our success is measured by the tangible impact we have on your KPIs, whether it\'s increasing revenue, reducing costs, or mitigating risk.'
-    },
-    {
-      title: 'Radical Transparency',
-      description: 'We operate as an extension of your team. You get clear, consistent communication and a predictable financial model that eliminates the uncertainty of project-based billing.'
-    },
-    {
-      title: 'Sustainable Partnership',
-      description: 'Our goal is to empower your organization for the long term. We build solutions that your team can own and maintain, and we provide the training and onboarding to ensure you get the most value from the technology we create together.'
-    }
-  ];
-
   const leadership = [
     {
       name: 'Arthur Procopos',
@@ -49,7 +34,7 @@ const About = () => {
           getWebPageSchema('/about', 'About Us - DataPulse AI', 'Learn about DataPulse AI\'s practice, values, and leadership.')
         ]}
       />
-      <AnimatedBackground theme="solution" />
+      <AnimatedBackground />
 
       {/* Hero Section */}
       <section className="about-hero section">
@@ -72,56 +57,6 @@ const About = () => {
               gap between strategy and operations to implement new technology alongside your
               people and clients by maintaining a human first approach.
             </motion.p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Experience Banner */}
-      <section className="experience-banner">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            className="experience-content"
-          >
-            <h2>17+ Years of Experience</h2>
-            <p>Working with startups, private companies, enterprises and public companies</p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Philosophy Section */}
-      <section className="philosophy-section section">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={staggerContainer}
-          >
-            <motion.h2 variants={fadeInUp} className="section-title">
-              Our <span className="gradient-text">Philosophy</span>
-            </motion.h2>
-
-            <motion.h3 className="philosophy-subtitle" variants={fadeInUp}>
-              Technology Should Augment Your Team, Not Replace It
-            </motion.h3>
-
-            <div className="philosophy-grid">
-              {philosophyPillars.map((pillar, index) => (
-                <motion.div
-                  key={index}
-                  className="philosophy-card"
-                  variants={fadeInUp}
-                >
-                  <div className="pillar-number">0{index + 1}</div>
-                  <h3>{pillar.title}</h3>
-                  <p>{pillar.description}</p>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </section>
@@ -175,7 +110,7 @@ const About = () => {
             viewport={{ once: true, amount: 0.2 }}
             variants={staggerContainer}
           >
-            <motion.h2 variants={fadeInUp} className="section-title">
+            <motion.h2 variants={fadeInUp} className="subsection-title">
               Our Leadership
             </motion.h2>
 
