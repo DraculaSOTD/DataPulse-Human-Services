@@ -118,7 +118,7 @@ const getContactNotificationEmail = (name, email, company, message) => {
                 })} UTC
               </p>
               <p style="margin: 10px 0 0; color: #64ffda; font-size: 12px;">
-                DataPulse AI • From Backlog to Bottom Line, Faster
+                DataPulse AI • The Joy of Creation
               </p>
             </td>
           </tr>
@@ -216,7 +216,7 @@ const getConfirmationEmail = (name) => {
                 DataPulse AI
               </p>
               <p style="margin: 0 0 15px; color: #64ffda; font-size: 13px; font-style: italic;">
-                From Backlog to Bottom Line, Faster
+                The Joy of Creation
               </p>
               <p style="margin: 0; color: #8892b0; font-size: 13px;">
                 <a href="mailto:arthur@datapulseai.co" style="color: #0fd5ce; text-decoration: none;">arthur@datapulseai.co</a> •
@@ -278,7 +278,7 @@ The DataPulse AI Team
 
 ---
 DataPulse AI
-From Backlog to Bottom Line, Faster
+The Joy of Creation
 arthur@datapulseai.co • info@datapulseai.co
   `.trim();
 };

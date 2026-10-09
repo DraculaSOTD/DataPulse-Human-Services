@@ -1,0 +1,285 @@
+.offerings {
+  position: relative;
+  min-height: 100vh;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Hero Section — page-scoped so it beats .section-sm's padding shorthand */
+.offerings .offerings-hero {
+  padding-top: var(--hero-offset);
+  padding-bottom: 4rem;
+}
+
+.offerings-hero-content {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.offerings-lead {
+  font-size: clamp(1.0625rem, 2vw, 1.3125rem);
+  color: var(--text-secondary);
+  margin: 1.5rem auto 0;
+  max-width: 760px;
+  line-height: 1.8;
+}
+
+/* Section headings */
+.analytics-section,
+.software-section,
+.startup-section,
+.examples-section {
+  border-top: 1px solid var(--border);
+}
+
+.software-section,
+.examples-section {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.analytics-section .section-title,
+.software-section .section-title,
+.examples-section .section-title {
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+/* Shared two-column service table */
+.service-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.service-table thead th {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-strong);
+  white-space: nowrap;
+}
+
+.service-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s ease;
+}
+
+.service-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.service-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.service-table tbody th {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1.25rem 1.5rem;
+  vertical-align: top;
+  width: 34%;
+  min-width: 220px;
+  border-right: 1px solid var(--border);
+}
+
+.service-table tbody td {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  padding: 1.25rem 1.5rem;
+  vertical-align: top;
+}
+
+/* Startup Partnership */
+.startup-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.startup-badge {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--white);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 1.5rem;
+}
+
+.startup-content h2 {
+  font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+  margin-bottom: 1.5rem;
+}
+
+.startup-content p {
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 2rem;
+}
+
+/* Examples of what we do */
+.examples-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.example-item {
+  position: relative;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  padding: 1.125rem 1.5rem 1.125rem 2.75rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.example-item::before {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 1.65rem;
+  width: 5px;
+  height: 5px;
+  background: var(--grey-mid);
+  transition: background 0.2s ease;
+}
+
+.example-item:hover {
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-primary);
+}
+
+.example-item:hover::before {
+  background: var(--white);
+}
+
+/* CTA */
+.offerings-cta {
+  background: rgba(255, 255, 255, 0.025);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.offerings-cta .cta-content h2 {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: 1rem;
+}
+
+.offerings-cta .cta-content p {
+  font-size: 1.0625rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .offerings .offerings-hero {
+    padding-top: 130px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Below 640px the tables stack into cards — no horizontal scrolling needed */
+@media (max-width: 640px) {
+  .service-table-wrapper {
+    overflow-x: visible;
+    border: none;
+    background: transparent;
+  }
+
+  .service-table,
+  .service-table tbody,
+  .service-table tbody tr,
+  .service-table tbody th,
+  .service-table tbody td {
+    display: block;
+    width: 100%;
+  }
+
+  .service-table thead {
+    display: none;
+  }
+
+  .service-table tbody tr {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 1rem;
+  }
+
+  .service-table tbody th {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    min-width: 0;
+    padding: 1rem 1.25rem;
+  }
+
+  .service-table tbody td {
+    padding: 1rem 1.25rem;
+  }
+
+  .service-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--grey-mid);
+    margin-bottom: 0.5rem;
+  }
+
+  .example-item {
+    border-right: none;
+  }
+}

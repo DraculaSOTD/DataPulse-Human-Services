@@ -1,58 +1,45 @@
+import { SITE_URL, CONTACT_EMAILS } from '../constants/config';
+
 // Organization Schema (for Home page)
 export const getOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "DataPulse AI",
   "alternateName": "DataPulse",
-  "url": "https://datapulseai.co",
-  "logo": "https://datapulseai.co/og-image.png",
-  "description": "Expert AI and software team, powered by our proprietary Acceleration Engine, delivering your most critical projects with unparalleled speed and value.",
-  "email": "arthur@datapulseai.co",
+  "url": SITE_URL,
+  "logo": `${SITE_URL}/og-image.png`,
+  "description": "A human and data science consultancy with proprietary data sciences, machine learning, and AI technology, partnering with leaders to implement strategic data, ML, and AI agendas.",
+  "email": CONTACT_EMAILS.PRIMARY,
   "founders": [
     {
       "@type": "Person",
       "name": "Arthur Procopos",
-      "jobTitle": "Co-founder and Director"
+      "jobTitle": "CEO and Innovation Officer"
     },
     {
       "@type": "Person",
       "name": "Calvin Nigrini",
-      "jobTitle": "Co-founder and Director"
-    },
-    {
-      "@type": "Person",
-      "name": "Dr. Riaan Conradie",
-      "jobTitle": "Co-founder",
-      "honorificPrefix": "Dr."
+      "jobTitle": "CTO and Information Officer"
     }
   ],
   "foundingDate": "2020",
-  "slogan": "From Backlog to Bottom Line, Faster",
+  "slogan": "The Joy of Creation",
   "sameAs": []
 });
 
-// Service Schema (for Services page)
+// Service Schema (for Offerings page)
+// No `offers` block: the site no longer publishes pricing, so advertising a
+// price here would misrepresent what a visitor can actually see.
 export const getServiceSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Service",
-  "serviceType": "AI & Software Development Services",
+  "serviceType": "Data, Machine Learning & AI Services",
   "provider": {
     "@type": "Organization",
     "name": "DataPulse AI"
   },
-  "offers": {
-    "@type": "Offer",
-    "price": "13500",
-    "priceCurrency": "USD",
-    "priceSpecification": {
-      "@type": "UnitPriceSpecification",
-      "billingDuration": "P1M",
-      "billingIncrement": 1
-    },
-    "description": "Tech & ML Partnership - Dedicated multi-disciplinary team for AI and software development"
-  },
   "areaServed": "Worldwide",
-  "description": "Expert AI and software development team providing strategic design, prototyping, full-stack development, machine learning solutions, and quality assurance."
+  "description": "Advanced analytics, insights, and AI services alongside a design, product, and software track — covering data discovery, ML and AI architecture, model build and training, and software delivery."
 });
 
 // LocalBusiness Schema (for Contact page)
@@ -60,11 +47,11 @@ export const getLocalBusinessSchema = () => ({
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "name": "DataPulse AI",
-  "url": "https://datapulseai.co",
+  "url": SITE_URL,
   "telephone": "",
-  "email": "arthur@datapulseai.co",
+  "email": CONTACT_EMAILS.PRIMARY,
   "priceRange": "$$$$",
-  "description": "Expert AI and software team delivering innovation projects with unparalleled speed and value."
+  "description": "A human and data science consultancy implementing data, machine learning, and AI technology alongside your people."
 });
 
 // Person Schema (for About page team members)
@@ -88,17 +75,19 @@ export const getBreadcrumbSchema = (items) => ({
     "@type": "ListItem",
     "position": index + 1,
     "name": item.name,
-    "item": `https://datapulseai.co${item.path}`
+    "item": `${SITE_URL}${item.path}`
   }))
 });
 
 // WebPage Schema (general page schema)
-export const getWebPageSchema = (name, description, url) => ({
+// `path` is the route path ('/', '/about', …); the absolute URL is built from
+// it so the emitted node always matches the route and sitemap.xml.
+export const getWebPageSchema = (path, name, description) => ({
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": name,
   "description": description,
-  "url": url,
+  "url": `${SITE_URL}${path}`,
   "publisher": {
     "@type": "Organization",
     "name": "DataPulse AI"

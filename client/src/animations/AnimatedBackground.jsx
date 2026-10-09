@@ -54,15 +54,17 @@ const AnimatedBackground = ({ theme = 'default' }) => {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
 
-        // Color changes based on theme
-        const colors = {
-          default: `rgba(15, 213, 206, ${this.opacity})`, // Cyan
-          problem: `rgba(255, 99, 71, ${this.opacity})`, // Red tint
-          solution: `rgba(60, 179, 113, ${this.opacity})`, // Green tint
-          acceleration: `rgba(138, 43, 226, ${this.opacity})` // Purple tint
+        // Themes shift along the greyscale ramp rather than by hue,
+        // so sections still read as distinct without colour.
+        const intensity = {
+          default: 0.55,
+          problem: 0.3,
+          solution: 0.7,
+          acceleration: 0.85
         };
 
-        ctx.fillStyle = colors[theme] || colors.default;
+        const alpha = this.opacity * (intensity[theme] ?? intensity.default);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx.fill();
       }
     }
@@ -75,11 +77,16 @@ const AnimatedBackground = ({ theme = 'default' }) => {
     let waveOffset = 0;
 
     const drawWaves = () => {
+      /* Three wave bands are filled per frame and the canvas is only
+         partially cleared, so these alphas accumulate toward
+         sum/(sum + clearAlpha). Keep them low: white on black builds up
+         far faster than the old cyan-on-navy did, and a heavy band
+         behind body copy destroys the contrast the design depends on. */
       const waveColors = {
-        default: ['rgba(15, 213, 206, 0.03)', 'rgba(0, 150, 255, 0.02)'],
-        problem: ['rgba(255, 99, 71, 0.03)', 'rgba(255, 140, 0, 0.02)'],
-        solution: ['rgba(60, 179, 113, 0.03)', 'rgba(34, 139, 34, 0.02)'],
-        acceleration: ['rgba(138, 43, 226, 0.03)', 'rgba(75, 0, 130, 0.02)']
+        default: ['rgba(255, 255, 255, 0.005)', 'rgba(255, 255, 255, 0.003)'],
+        problem: ['rgba(255, 255, 255, 0.003)', 'rgba(255, 255, 255, 0.002)'],
+        solution: ['rgba(255, 255, 255, 0.007)', 'rgba(255, 255, 255, 0.004)'],
+        acceleration: ['rgba(255, 255, 255, 0.009)', 'rgba(255, 255, 255, 0.005)']
       };
 
       const colors = waveColors[theme] || waveColors.default;
@@ -107,10 +114,10 @@ const AnimatedBackground = ({ theme = 'default' }) => {
     // Draw connections between nearby particles
     const drawConnections = () => {
       const connectionColors = {
-        default: 'rgba(15, 213, 206, 0.1)',
-        problem: 'rgba(255, 99, 71, 0.1)',
-        solution: 'rgba(60, 179, 113, 0.1)',
-        acceleration: 'rgba(138, 43, 226, 0.1)'
+        default: 'rgba(255, 255, 255, 0.085)',
+        problem: 'rgba(255, 255, 255, 0.045)',
+        solution: 'rgba(255, 255, 255, 0.110)',
+        acceleration: 'rgba(255, 255, 255, 0.135)'
       };
 
       for (let i = 0; i < particles.length; i++) {
@@ -134,7 +141,7 @@ const AnimatedBackground = ({ theme = 'default' }) => {
     // Animation loop
     let animationId;
     const animate = () => {
-      ctx.fillStyle = 'rgba(10, 25, 47, 0.1)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       drawWaves();

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CONTACT_EMAILS } from '../constants/config';
 import './Navigation.css';
 
 const Navigation = () => {
@@ -18,10 +17,11 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Home is intentionally absent — the logo above links to it.
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Services', path: '/services' },
     { name: 'About', path: '/about' },
+    { name: 'Offerings', path: '/offerings' },
+    { name: 'Use Cases', path: '/use-cases' },
     { name: 'Contact', path: '/contact' }
   ];
 
@@ -33,25 +33,27 @@ const Navigation = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="nav-container">
-        <Link to="/" className="logo">
-          <motion.div
-            className="logo-pulse"
-            animate={{
-              scale: [1, 1.1, 1],
-              opacity: [0.7, 1, 0.7]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-          <span className="logo-text">
-            DataPulse <span className="gradient-text">AI</span>
-          </span>
-        </Link>
+        <div className="nav-bar">
+          <Link to="/" className="logo">
+            <span className="logo-text">
+              DataPulse <span className="gradient-text">AI</span>
+            </span>
+          </Link>
 
-        {/* Desktop Menu */}
+          {/* Mobile Menu Toggle */}
+          <button
+            className="mobile-menu-toggle"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            <span className={mobileMenuOpen ? 'open' : ''}></span>
+            <span className={mobileMenuOpen ? 'open' : ''}></span>
+            <span className={mobileMenuOpen ? 'open' : ''}></span>
+          </button>
+        </div>
+
+        {/* Desktop Menu — sits below the logo */}
         <ul className="nav-links desktop-menu">
           {navLinks.map((link, index) => (
             <motion.li
@@ -69,27 +71,6 @@ const Navigation = () => {
             </motion.li>
           ))}
         </ul>
-
-        <motion.a
-          href={`mailto:${CONTACT_EMAILS.PRIMARY}`}
-          className="btn btn-primary nav-cta desktop-cta"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4 }}
-        >
-          Get Started
-        </motion.a>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="mobile-menu-toggle"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span className={mobileMenuOpen ? 'open' : ''}></span>
-          <span className={mobileMenuOpen ? 'open' : ''}></span>
-          <span className={mobileMenuOpen ? 'open' : ''}></span>
-        </button>
       </div>
 
       {/* Mobile Menu */}
@@ -119,18 +100,6 @@ const Navigation = () => {
                   </Link>
                 </motion.li>
               ))}
-              <motion.li
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <a
-                  href={`mailto:${CONTACT_EMAILS.PRIMARY}`}
-                  className="btn btn-primary"
-                >
-                  Get Started
-                </a>
-              </motion.li>
             </ul>
           </motion.div>
         )}

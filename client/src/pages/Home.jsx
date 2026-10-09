@@ -4,14 +4,21 @@ import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import SEO from '../components/SEO';
 import { fadeInUp, staggerContainer } from '../constants/animations';
-import { CONTACT_EMAILS } from '../constants/config';
 import { getOrganizationSchema, getWebPageSchema } from '../utils/structuredData';
 import './Home.css';
 
 const Home = () => {
   const [currentTheme, setCurrentTheme] = useState('default');
 
+  const indicators = [
+    { value: '80%', label: 'Work Automated' },
+    { value: '15min', label: 'Prototype Speed' },
+    { value: '17+', label: 'Years Experience' },
+    { value: '7%', label: 'Increase in Revenue' }
+  ];
+
   useEffect(() => {
+    // Four sections now: hero, partnership, problem, offerings power.
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const windowHeight = window.innerHeight;
@@ -19,9 +26,9 @@ const Home = () => {
       if (scrollPosition < windowHeight * 0.8) {
         setCurrentTheme('default');
       } else if (scrollPosition < windowHeight * 1.8) {
-        setCurrentTheme('problem');
-      } else if (scrollPosition < windowHeight * 2.8) {
         setCurrentTheme('solution');
+      } else if (scrollPosition < windowHeight * 2.8) {
+        setCurrentTheme('problem');
       } else {
         setCurrentTheme('acceleration');
       }
@@ -34,15 +41,15 @@ const Home = () => {
   return (
     <div className="home">
       <SEO
-        title="DataPulse AI - From Backlog to Bottom Line, Faster"
-        description="Expert AI and software development team powered by our proprietary Acceleration Engine. Deliver critical projects with unparalleled speed, predictability, and value. Transform your innovation backlog into results."
-        keywords="AI development, software development, machine learning, acceleration engine, innovation delivery, tech partnership, startup development, prototype development"
+        /* No title: falls back to "DataPulse AI - The Joy of Creation" */
+        description="We partner with leaders on AI and technology strategies. DataPulse AI works with leaders and operations teams to implement data, machine learning, and AI technology."
+        keywords="AI consultancy, data science consultancy, machine learning strategy, AI strategy, data strategy, ML implementation, AI implementation, technology consulting"
         ogType="website"
-        structuredData={[getOrganizationSchema(), getWebPageSchema('home', 'DataPulse AI - From Backlog to Bottom Line, Faster', 'Expert AI and software development team powered by our proprietary Acceleration Engine.')]}
+        structuredData={[getOrganizationSchema(), getWebPageSchema('/', 'DataPulse AI - Human and Data Science Consultancy', 'We partner with leaders on AI and technology strategies.')]}
       />
       <AnimatedBackground theme={currentTheme} />
 
-      {/* Hero Section */}
+      {/* Hero Section — animation and pill only */}
       <section className="hero-section section">
         <div className="container">
           <motion.div
@@ -52,48 +59,7 @@ const Home = () => {
             variants={staggerContainer}
           >
             <motion.div className="hero-tag" variants={fadeInUp}>
-              <span className="tag-pulse"></span>
               The Joy of Creation
-            </motion.div>
-
-            <motion.h1 variants={fadeInUp}>
-              Your Innovation Backlog,
-              <br />
-              <span className="gradient-text">Delivered. Faster.</span>
-            </motion.h1>
-
-            <motion.p className="hero-subtitle" variants={fadeInUp}>
-              We provide an expert AI and software team, powered by our proprietary
-              <strong> Acceleration Engine</strong>, to deliver your most critical projects
-              with unparalleled speed, predictability, and value.
-            </motion.p>
-
-            <motion.p className="hero-description" variants={fadeInUp}>
-              Stop waiting for internal resources. Start delivering results.
-            </motion.p>
-
-            <motion.div className="hero-cta" variants={fadeInUp}>
-              <Link to="/services" className="btn btn-primary">
-                See How It Works
-              </Link>
-              <Link to="/contact" className="btn btn-secondary">
-                Get In Touch
-              </Link>
-            </motion.div>
-
-            <motion.div className="hero-stats" variants={fadeInUp}>
-              <div className="stat">
-                <h3>80%</h3>
-                <p>Work Automated</p>
-              </div>
-              <div className="stat">
-                <h3>15min</h3>
-                <p>Prototype Speed</p>
-              </div>
-              <div className="stat">
-                <h3>25+</h3>
-                <p>Years Experience</p>
-              </div>
             </motion.div>
           </motion.div>
         </div>
@@ -110,6 +76,44 @@ const Home = () => {
               ease: 'easeInOut'
             }}
           />
+        </div>
+      </section>
+
+      {/* Partnership Section */}
+      <section className="partnership-section section">
+        <div className="container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+            className="partnership-content"
+          >
+            {/* The page h1 — the hero carries no heading by design, so the
+                document outline starts here. Sized by
+                .partnership-section .section-title, which out-specifies the
+                bare h1 rule, so the tag change is visually inert. */}
+            <motion.h1 variants={fadeInUp} className="section-title">
+              We partner with leaders on AI and technology strategies.
+            </motion.h1>
+
+            <motion.p className="partnership-lead" variants={fadeInUp}>
+              We work with leaders and operation teams to development and implement data,
+              machine learning (ML), and AI technology.
+            </motion.p>
+
+            <motion.div className="indicators" variants={fadeInUp}>
+              <h3 className="indicators-title">Some performance indicators</h3>
+              <div className="indicators-grid">
+                {indicators.map((indicator) => (
+                  <div className="stat" key={indicator.label}>
+                    <h4>{indicator.value}</h4>
+                    <p>{indicator.label}</p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -178,58 +182,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="solution-section section">
-        <div className="container">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={staggerContainer}
-            className="solution-content"
-          >
-            <motion.h2 variants={fadeInUp} className="section-title">
-              We Clear Your Backlog and <br />
-              <span className="gradient-text">Deliver Your Bottom Line</span>
-            </motion.h2>
-
-            <motion.p className="solution-intro" variants={fadeInUp}>
-              The DataPulse AI Tech&ML Partnership is not another consulting gig or outsourced
-              project. It's a <strong>new model for innovation</strong>.
-            </motion.p>
-
-            <motion.div className="solution-features" variants={fadeInUp}>
-              <div className="feature">
-                <div className="feature-number">01</div>
-                <h3>Predictable Monthly Investment</h3>
-                <p>
-                  For a flat, predictable monthly fee, you get a dedicated, multi-disciplinary
-                  squad of strategists, designers, data scientists, and engineers who integrate
-                  with your team and are 100% focused on your goals.
-                </p>
-              </div>
-
-              <div className="feature">
-                <div className="feature-number">02</div>
-                <h3>End-to-End Delivery</h3>
-                <p>
-                  We take your most ambitious ideas from concept to production-ready application,
-                  faster than you thought possible. We handle everything from strategy and design
-                  to development, testing, and deployment.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div className="solution-cta" variants={fadeInUp}>
-              <Link to="/services" className="btn btn-primary">
-                Explore the Partnership
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Acceleration Engine Section */}
+      {/* Power Behind Our Offerings */}
       <section className="acceleration-section section">
         <div className="container">
           <motion.div
@@ -240,9 +193,7 @@ const Home = () => {
             className="acceleration-content"
           >
             <motion.h2 variants={fadeInUp} className="section-title">
-              The Power Behind Our Speed:
-              <br />
-              <span className="gradient-text">Acceleration Engine</span>
+              Power behind our <span className="gradient-text">Offerings</span>
             </motion.h2>
 
             <motion.p className="acceleration-subtitle" variants={fadeInUp}>
@@ -326,15 +277,14 @@ const Home = () => {
             variants={fadeInUp}
             className="cta-content"
           >
-            <h2>Ready to Transform Your Backlog?</h2>
-            <p>Let's discuss how DataPulse AI can accelerate your innovation delivery.</p>
+            <h2>Let's achieve your AI strategies together</h2>
             <div className="cta-buttons">
-              <Link to="/services" className="btn btn-primary">
-                View Pricing
+              <Link to="/about" className="btn btn-primary">
+                Our Story
               </Link>
-              <a href={`mailto:${CONTACT_EMAILS.PRIMARY}`} className="btn btn-secondary">
-                Contact Us
-              </a>
+              <Link to="/offerings" className="btn btn-secondary">
+                Offerings
+              </Link>
             </div>
           </motion.div>
         </div>

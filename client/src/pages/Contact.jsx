@@ -65,10 +65,10 @@ const Contact = () => {
   return (
     <div className="contact">
       <SEO
-        title="Contact Us - DataPulse AI"
+        title="Contact Us"
         description="Get in touch with DataPulse AI to transform your innovation backlog into delivered results. We typically respond within 24 hours. Flexible engagement models for every stage."
         keywords="contact DataPulse AI, AI development inquiry, software development consultation, tech partnership contact, startup development contact"
-        structuredData={[getWebPageSchema('contact', 'Contact Us - DataPulse AI', 'Get in touch to discuss how we can accelerate your innovation delivery.')]}
+        structuredData={[getWebPageSchema('/contact', 'Contact Us - DataPulse AI', 'Get in touch to discuss how we can accelerate your innovation delivery.')]}
       />
       <AnimatedBackground theme="default" />
 

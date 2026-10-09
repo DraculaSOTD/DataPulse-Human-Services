@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router-dom';
+import { SITE_URL } from '../constants/config';
 
 const SEO = ({
   title,
@@ -9,9 +11,11 @@ const SEO = ({
   canonical,
   structuredData
 }) => {
-  const siteUrl = 'https://datapulseai.co';
-  const fullTitle = title ? `${title} | DataPulse AI` : 'DataPulse AI - From Backlog to Bottom Line, Faster';
-  const canonicalUrl = canonical || siteUrl;
+  // Derived from the route rather than passed per page, so a new page cannot
+  // forget it and no page can drift from its own URL. `canonical` overrides.
+  const { pathname } = useLocation();
+  const fullTitle = title ? `${title} | DataPulse AI` : 'DataPulse AI - The Joy of Creation';
+  const canonicalUrl = canonical || `${SITE_URL}${pathname}`;
 
   return (
     <Helmet>
@@ -27,7 +31,7 @@ const SEO = ({
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+      <meta property="og:image" content={`${SITE_URL}${ogImage}`} />
       <meta property="og:site_name" content="DataPulse AI" />
 
       {/* Twitter */}
@@ -35,7 +39,7 @@ const SEO = ({
       <meta property="twitter:url" content={canonicalUrl} />
       <meta property="twitter:title" content={fullTitle} />
       <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={`${siteUrl}${ogImage}`} />
+      <meta property="twitter:image" content={`${SITE_URL}${ogImage}`} />
 
       {/* Structured Data */}
       {structuredData && (

@@ -1,0 +1,242 @@
+.use-cases {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Track Record Section — page-scoped so it beats .section's padding shorthand */
+.use-cases .track-record-section {
+  padding-top: var(--hero-offset);
+}
+
+.track-record-section .section-title {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.track-record-intro {
+  text-align: center;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  margin: 0 auto 4rem;
+  max-width: 760px;
+  line-height: 1.8;
+}
+
+.track-record-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.track-record-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.track-record-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.project-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+  color: var(--white);
+}
+
+.project-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.track-record-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.track-record-card p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+/* Values Section */
+.values-section {
+  background: rgba(255, 255, 255, 0.015);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.values-content h2 {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: 3rem;
+}
+
+.values-grid {
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  margin: 3rem 0;
+}
+
+.value-item h3 {
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  color: var(--white);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.value-item p {
+  color: var(--grey-mid);
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.values-description {
+  font-size: 1.0625rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Partners Section */
+.partners-section {
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+.partners-content {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.partners-content h2 {
+  font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 2rem 0;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+}
+
+.carousel-track {
+  display: flex;
+  /* Gap must match PARTNER_CARD_GAP in UseCases.jsx */
+  gap: 2rem;
+  width: fit-content;
+}
+
+.partner-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Fixed at every breakpoint so the JS travel distance stays correct */
+  width: 200px;
+  min-width: 200px;
+  height: 100px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.partner-card:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.partner-logo {
+  max-width: 100%;
+  max-height: 60px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.partner-card:hover .partner-logo {
+  opacity: 1;
+}
+
+/* CTA Section */
+.use-cases-cta {
+  background: rgba(255, 255, 255, 0.025);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.use-cases-cta .cta-content h2 {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: 2.5rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .use-cases .track-record-section {
+    padding-top: 130px;
+  }
+
+  .track-record-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .values-grid {
+    gap: 2.5rem;
+  }
+
+  .partners-content h2 {
+    padding: 0 1rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
