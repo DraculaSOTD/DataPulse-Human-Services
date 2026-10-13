@@ -148,13 +148,17 @@
   margin-bottom: 2.5rem;
 }
 
-/* Selection inverts to white-on-black rather than shifting hue, so the
-   active chip is unmistakable in a greyscale system. */
+/* Frosted chips. Selection inverts to a bright glass panel rather than
+   shifting hue, so the active chip stays unmistakable in a greyscale system
+   while every chip reads as the same material. */
 .industry-chip {
   padding: 0.5rem 1.125rem;
-  background: transparent;
-  border: 1px solid var(--border-strong);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm), var(--edge-light);
   color: var(--text-secondary);
   font-size: 0.6875rem;
   font-weight: 600;
@@ -163,14 +167,16 @@
 }
 
 .industry-chip:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg-hover);
   border-color: var(--white);
+  box-shadow: var(--shadow-md), var(--edge-light);
   color: var(--white);
 }
 
 .industry-chip[aria-pressed="true"] {
-  background: var(--white);
-  border-color: var(--white);
+  background: var(--glass-bg-bright);
+  border-color: var(--glass-border-bright);
+  box-shadow: var(--shadow-md), var(--edge-light-bright);
   color: var(--black);
 }
 
@@ -184,15 +190,17 @@
 
 .example-item {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--edge-light);
   padding: 1.5rem;
   transition: var(--transition);
 }
 
 .example-item:hover {
-  border-color: var(--border-strong);
+  border-color: var(--border);
   background: var(--surface-raised);
+  box-shadow: var(--shadow-lg), var(--edge-light);
 }
 
 .example-title {
@@ -252,8 +260,9 @@
   align-items: center;
   justify-content: center;
   background: var(--surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--edge-light);
   position: relative;
 }
 
@@ -285,8 +294,9 @@
 
 .acceleration-card {
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--edge-light);
   padding: 2.5rem;
   text-align: left;
   transition: all 0.3s ease;
@@ -295,8 +305,9 @@
 }
 
 .acceleration-card:hover {
-  border-color: var(--border-strong);
+  border-color: var(--border);
   background: var(--surface-raised);
+  box-shadow: var(--shadow-lg), var(--edge-light);
 }
 
 .acceleration-card h3 {

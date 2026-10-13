@@ -45,9 +45,10 @@
 /* Shared two-column service table */
 .service-table-wrapper {
   overflow-x: auto;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius);
   background: var(--surface);
+  box-shadow: var(--shadow-lg), var(--edge-light);
 }
 
 .service-table {
@@ -56,6 +57,9 @@
   text-align: left;
 }
 
+/* The title row casts a shadow onto the body. `position`/`z-index` are load
+   bearing: without them the shadow paints beneath the tbody row backgrounds
+   and never shows. */
 .service-table thead th {
   background: rgba(255, 255, 255, 0.05);
   color: var(--white);
@@ -64,7 +68,10 @@
   text-transform: uppercase;
   letter-spacing: 0.14em;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.55);
+  position: relative;
+  z-index: 1;
   white-space: nowrap;
 }
 
@@ -89,7 +96,7 @@
   vertical-align: top;
   width: 34%;
   min-width: 220px;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border-soft);
 }
 
 .service-table tbody td {
@@ -174,10 +181,12 @@
 
 /* Below 640px the tables stack into cards — no horizontal scrolling needed */
 @media (max-width: 640px) {
+  /* The frame moves from the wrapper to each row, so its shadow goes too. */
   .service-table-wrapper {
     overflow-x: visible;
     border: none;
     background: transparent;
+    box-shadow: none;
   }
 
   .service-table,
@@ -194,9 +203,10 @@
   }
 
   .service-table tbody tr {
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-soft);
     border-radius: var(--radius);
     background: var(--surface);
+    box-shadow: var(--shadow-md), var(--edge-light);
     margin-bottom: 1rem;
   }
 

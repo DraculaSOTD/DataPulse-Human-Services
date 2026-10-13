@@ -17,6 +17,8 @@ The site was substantially overhauled in October 2026: repositioned from a fixed
 
 A second content pass followed later the same month: Home dropped its "Strategic Initiatives are getting stuck…" problem framing in favour of the industry-filtered "Examples of what we do" grid moved up from Offerings, which also gained Telecommunications and Retail filters; About gained a "Who we are" section and a single content measure shared by every section; the headline performance indicators were centralised so Home and Use Cases show the same figures; and Contact gained a closing CTA.
 
+A third pass added depth to the same palette rather than changing it. The site had been entirely flat — one hairline per surface and no shadow anywhere — so tiles, the two Offerings tables, the leadership cards, the use-case icons and the contact form gained drop shadows with lighter borders, and the interactive chrome (Home's industry filter tabs and every closing-CTA button) gained a frosted-glass treatment. **No colour value changed**, and the "The Joy of Creation" and "For Startups" pills were left flat on purpose.
+
 ## Stack
 
 | Layer | Technology |
@@ -69,7 +71,9 @@ Then open **http://localhost:3000**. The Express API runs on port 5000; Vite pro
 
 **Working:** All five pages and the `/services` redirect. Navigation, routing, scroll-restoration, the canvas background animation, and all scroll-reveal animations. Per-page SEO metadata and JSON-LD structured data. The contact form submits, validates, and reports success or failure. Responsive from 375px up. Production build is clean with no console errors.
 
-**Accessibility:** Every text node on every page measures at least **7.04:1** contrast against its background (WCAG AAA), verified programmatically. This was a hard requirement of the greyscale redesign.
+**Visual design:** Greyscale, near-square corners, and depth carried by a dark drop shadow paired with a faint top-edge highlight — the highlight is what makes the lift visible at all, since a dark shadow on a pure-black ground is nearly invisible. Frosted glass is confined to the interactive chrome. The tokens, the rules behind where glass is and is not applied, and three traps worth knowing before editing shadows are in the design system section of [TECHNICAL-DOCUMENTATION.md](TECHNICAL-DOCUMENTATION.md).
+
+**Accessibility:** Every text node on every page measures at least **7.04:1** contrast against its background (WCAG AAA), verified programmatically. This was a hard requirement of the greyscale redesign. The translucent glass surfaces added later are included and measured against their composited value — the worst of them lands at 10.43:1, so the floor is still set by the opaque palette rather than by the glass.
 
 **Needs configuration:** Email. Without `EMAIL_USER` and `EMAIL_PASS` the server logs a startup warning and the contact form still returns success to the user, but no email is sent — the submission exists only in the server log. See the configuration section of [TECHNICAL-DOCUMENTATION.md](TECHNICAL-DOCUMENTATION.md).
 

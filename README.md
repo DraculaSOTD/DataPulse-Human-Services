@@ -112,6 +112,7 @@ Black-and-white greyscale — **no hue anywhere in `client/src`**. The October 2
 - Page ground: `#000000` · Section ground: `#0a0a0a` · Cards: `#141414`
 - Headings: `#f5f5f5` · Body copy: `#c4c4c4` · Muted labels: `#a0a0a0`
 - Emphasis and primary buttons: `#ffffff`
+- Elevation: dark drop shadows paired with a faint top-edge highlight · frosted glass on the filter tabs and closing CTA buttons
 
 Defined as custom properties on `:root` in `client/src/styles/global.css`. **That file is the authority** — the full token table, and the contrast requirement the values exist to satisfy, are documented in [TECHNICAL-DOCUMENTATION.md §4](TECHNICAL-DOCUMENTATION.md).
 

@@ -239,15 +239,52 @@ Defined as custom properties on `:root` in [global.css](client/src/styles/global
 | `--surface-raised` | `#1c1c1c` | Hover state |
 | `--border` | `rgba(255,255,255,0.12)` | Hairlines |
 | `--border-strong` | `rgba(255,255,255,0.28)` | Hover / active edges |
+| `--border-soft` | `rgba(255,255,255,0.07)` | Hairlines on elevated surfaces — the shadow carries the separation, so the line steps back |
 | `--grey-mid` | `#a0a0a0` | Meta and muted labels only — **never body copy** |
 | `--text-secondary` | `#c4c4c4` | Body copy |
 | `--text-primary` | `#f5f5f5` | Headings |
 | `--white` | `#ffffff` | Emphasis, primary button fill |
 | `--radius` | `2px` | Near-square corners — the "sharp" of the sharper UI |
+| `--radius-pill` | `2px` | Chips and badges. Deliberately **not** a pill despite the name — it exists so the pill-shaped elements can be found and changed as a group, not to round them |
 | `--nav-height` | `112px` | Height of the two-row fixed header |
 | `--hero-offset` | `calc(var(--nav-height) + 3rem)` | Top padding every page hero must clear |
 
 **Contrast is a hard requirement**, not a preference: every text node on every page measures **≥ 7.04:1** (WCAG AAA), verified programmatically across all five routes. `--grey-mid` is as dark as the muted tone may go — it lands at roughly 7:1 on `--surface`. Darkening it breaks the guarantee.
+
+Translucent surfaces are included in that guarantee and are measured against their **composited** value, not their token value: a glass panel is alpha-composited over its section band, which is itself composited over the page ground. The frosted elements all clear the floor comfortably — the worst of them is the resting filter chip at **10.43:1** (`--text-secondary` over `--glass-bg` on the Examples band, compositing to `#151515`), and the bright primary CTA measures **16.08:1** (`--black` over `--glass-bg-bright`, compositing to `#e1e1e1`). **Any new glass surface must be checked the same way** — lowering a `--glass-bg*` opacity moves the composited background toward the ground and can quietly cost several stops of contrast.
+
+### Elevation and glass
+
+A depth layer over the same greyscale palette. No hue, no new colours — only alpha.
+
+| Token | Value | Role |
+|---|---|---|
+| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.45)` | Small objects — icon squares, chips |
+| `--shadow-md` | `0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.55)` | Resting state for tiles, cards, buttons |
+| `--shadow-lg` | `0 2px 4px rgba(0,0,0,0.45), 0 10px 32px rgba(0,0,0,0.6)` | Hover state, and large panels (tables, the contact form) |
+| `--edge-light` | `inset 0 1px 0 rgba(255,255,255,0.06)` | Faint top-edge highlight — pairs with every dark shadow |
+| `--edge-light-bright` | `inset 0 1px 0 rgba(255,255,255,0.5)` | The same, for bright glass |
+| `--glass-bg` | `rgba(255,255,255,0.07)` | Frosted panel fill |
+| `--glass-bg-hover` | `rgba(255,255,255,0.12)` | Frosted panel, hover |
+| `--glass-bg-bright` | `rgba(255,255,255,0.88)` | Dominant action — carries `--black` text |
+| `--glass-bg-bright-hover` | `rgba(255,255,255,0.96)` | The same, hover |
+| `--glass-border` | `rgba(255,255,255,0.18)` | Frosted panel edge |
+| `--glass-border-bright` | `rgba(255,255,255,0.55)` | Bright glass edge |
+| `--glass-blur` | `blur(12px) saturate(120%)` | The `backdrop-filter` value — always emit the `-webkit-` prefix beside it |
+
+**Why every shadow is paired with an inset highlight.** This is the one non-obvious thing in the system. The ground is `#000` and surfaces are `#141414`, so a dark drop shadow on its own is very nearly invisible — the eye has nothing to compare the falloff against. `--edge-light` catches the top edge of the element instead, and that is what actually reads as lift. A shadow applied without it will look like nothing happened, and the instinct to then raise the shadow opacity does not help.
+
+**Glass is confined to interactive chrome.** The frosted treatment is applied to Home's `.industry-chip` filter tabs, the closing-CTA buttons on all five pages, and the Offerings startup button — things the user clicks. Content surfaces (tiles, tables, leadership cards, the contact form) take shadow plus `--border-soft` only and keep their opaque `--surface`, because a page of translucent panels over a moving canvas is unreadable. Two pill elements are **deliberately excluded** and must stay flat: `.hero-tag` (Home's "The Joy of Creation") and `.startup-badge` (Offerings' "For Startups").
+
+**The bright/dim split preserves the CTA hierarchy.** Each closing CTA is a pair. If both buttons became dim glass the primary would stop reading as the main action, so the primary takes `--glass-bg-bright` with `--black` text while the secondary takes `--glass-bg`. That is the whole reason two glass fills exist rather than one.
+
+**Expect tint, not blur.** `backdrop-filter` blurs what is behind it, and what is behind it here is the near-flat canvas gradient — so the glass reads mainly as its tint, bright border and shadow rather than as visible frosting. That is a consequence of the black ground, not a defect; raising `--glass-blur` will not change it.
+
+> **`box-shadow` replaces, it does not stack.** The Contact inputs carry a resting inset *and* a focus ring, so [Contact.css](client/src/pages/Contact.css) restates **both** layers inside the `:focus` rule. Adding a resting shadow to any element that already sets `box-shadow` on `:focus` or `:hover` — without restating it there — silently drops one of the two. The symptom on Contact is a vanished keyboard focus ring, which is an accessibility regression rather than a cosmetic one.
+
+> **A table header shadow needs a stacking context.** `.service-table thead th` sets `position: relative; z-index: 1` so its shadow paints *over* the `tbody` row backgrounds. Without them the shadow renders beneath the rows and is invisible — the rule looks correct and does nothing.
+
+> **`overflow` and `mask-image` clip outer shadows.** `.partner-card` sits inside a masked, `overflow: hidden` carousel and is therefore left flat on purpose. The Offerings table wrapper is fine — `overflow-x: auto` clips its *children*, not the element's own shadow — but below 640px the wrapper drops its frame and each row becomes a card, so the wrapper's shadow is explicitly zeroed in that breakpoint and re-applied per row. **A frame and its shadow must move together.**
 
 ### Two conventions worth knowing
 
@@ -262,6 +299,8 @@ Follow this pattern for any new page.
 **`.gradient-text`.** Retained for markup compatibility — it is applied via `<span className="gradient-text">` in several headings. Now a white → `#b5b5b5` ramp (clipped to the text), with no hue. The dim end stops at `#b5b5b5` (~9.7:1 on black) so the accent never costs legibility.
 
 Also in `global.css`: a visible `:focus-visible` outline for keyboard users, a `prefers-reduced-motion` block that collapses animation and transition durations, and the `.visually-hidden` utility (screen-reader-only text — used by the service-table captions on Offerings and the filter-count announcement on Home). That utility lived in `Offerings.css` until a second page needed it.
+
+The frosted closing-CTA buttons live there too, as `.cta-buttons .btn-primary` / `.btn-secondary` (plus `.startup-content` for the Offerings startup button). Every page's closing section wraps its pair in the same `.cta-buttons` div, so **one rule block covers all five pages** — the alternative was five near-identical copies in the page stylesheets, which is how `.cta-buttons` itself ended up defined five times. The descendant selector is also what scopes the treatment: it out-specifies the bare `.btn-primary` rule without `!important`, and it deliberately does not reach the Contact form's submit button, which sits in `.contact-form` rather than `.cta-buttons` and stays a solid white button.
 
 ---
 
@@ -400,7 +439,7 @@ Frontend configuration is compile-time only and lives entirely in [config.js](cl
 | `npm run preview` | `client/` | Serves the built bundle locally |
 | `npm test` | either | **Stub** — echoes and exits 1 |
 
-Current build output: `index.html` ~1.1 kB, CSS ~24.9 kB (5.0 kB gzip), JS ~411 kB (131 kB gzip) — a single chunk, no code splitting.
+Current build output: `index.html` ~1.1 kB, CSS ~27.6 kB (5.4 kB gzip), JS ~411 kB (131 kB gzip) — a single chunk, no code splitting.
 
 `client/dist/` is gitignored, so a fresh clone contains no build output and `npm run build` is a required step before deploying, not a refresh of something already in the repo.
 

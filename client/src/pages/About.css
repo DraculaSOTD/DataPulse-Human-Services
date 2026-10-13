@@ -89,22 +89,27 @@
   align-items: center;
   text-align: center;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-soft);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-md), var(--edge-light);
   padding: 2.5rem 2rem;
   transition: all 0.3s ease;
 }
 
 .team-card:hover {
-  border-color: var(--border-strong);
+  border-color: var(--border);
   background: var(--surface-raised);
+  box-shadow: var(--shadow-lg), var(--edge-light);
 }
 
+/* The 1px frame is faked with padding + background rather than a border, so
+   lessening it means dimming that background. */
 .team-photo-container {
   width: 180px;
   height: 180px;
   padding: 1px;
-  background: var(--border-strong);
+  background: var(--border);
+  box-shadow: var(--shadow-sm);
   margin-bottom: 1.5rem;
   overflow: hidden;
 }

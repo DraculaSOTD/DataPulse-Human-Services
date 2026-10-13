@@ -27,6 +27,28 @@
   --radius: 2px;
   --radius-pill: 2px;
 
+  /* Elevation — a dark falloff plus a faint top highlight. The highlight is
+     what makes the lift legible: a purely dark shadow is near-invisible
+     against the black ground. */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.45), 0 10px 32px rgba(0, 0, 0, 0.6);
+  --edge-light: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  /* Lessened hairline — on elevated surfaces the shadow carries the
+     separation, so the line steps back out of the way. */
+  --border-soft: rgba(255, 255, 255, 0.07);
+
+  /* Frosted glass — greyscale only, no hue, per the rest of the system. */
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-bg-hover: rgba(255, 255, 255, 0.12);
+  --glass-bg-bright: rgba(255, 255, 255, 0.88);
+  --glass-bg-bright-hover: rgba(255, 255, 255, 0.96);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-border-bright: rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(12px) saturate(120%);
+  --edge-light-bright: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+
   /* Fixed header is two rows (logo above links) — pages must clear it.
      Page hero rules need a page-scoped selector to out-specify the
      `.section` / `.section-sm` padding shorthands below. */
@@ -203,6 +225,46 @@ select:focus-visible {
   background: rgba(255, 255, 255, 0.08);
   border-color: var(--white);
   color: var(--white);
+}
+
+/* Frosted closing-CTA buttons. Every page's last subsection shares the
+   `.cta-buttons` wrapper, so these four rules cover all of them; the Offerings
+   startup button joins via `.startup-content`. The primary stays the dominant
+   action by being a *bright* glass panel rather than a dim one, so the pair
+   keeps its hierarchy. */
+.cta-buttons .btn-primary,
+.startup-content .btn-primary {
+  background: var(--glass-bg-bright);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-color: var(--glass-border-bright);
+  color: var(--black);
+  box-shadow: var(--shadow-md), var(--edge-light-bright);
+}
+
+.cta-buttons .btn-primary:hover,
+.startup-content .btn-primary:hover {
+  background: var(--glass-bg-bright-hover);
+  border-color: var(--white);
+  color: var(--black);
+  box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.cta-buttons .btn-secondary,
+.startup-content .btn-secondary {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-md), var(--edge-light);
+}
+
+.cta-buttons .btn-secondary:hover,
+.startup-content .btn-secondary:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--white);
+  color: var(--white);
+  box-shadow: var(--shadow-lg), var(--edge-light);
 }
 
 /* Kept for markup compatibility: now a white -> grey ramp, no hue.
