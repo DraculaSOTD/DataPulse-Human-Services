@@ -87,9 +87,16 @@
 .values-grid {
   display: flex;
   justify-content: center;
-  gap: 4rem;
+  gap: 2.5rem;
   flex-wrap: wrap;
   margin: 3rem 0;
+}
+
+/* Fixed basis so the four labels wrap to a consistent column width rather
+   than sizing to their own text and leaving a ragged row. */
+.value-item {
+  flex: 0 1 200px;
+  max-width: 220px;
 }
 
 .value-item h3 {
@@ -220,10 +227,6 @@
 
   .track-record-grid {
     grid-template-columns: 1fr;
-  }
-
-  .values-grid {
-    gap: 2.5rem;
   }
 
   .partners-content h2 {

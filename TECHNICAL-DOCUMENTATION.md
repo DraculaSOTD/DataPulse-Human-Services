@@ -53,9 +53,9 @@ PRODUCTION
 │       ├── App.jsx                 Providers, route table
 │       ├── animations/             AnimatedBackground (canvas)
 │       ├── components/             Navigation, SEO, ScrollToTop
-│       ├── constants/              animations.js, config.js
+│       ├── constants/              animations.js, config.js, indicators.js
 │       ├── pages/                  Home, About, Offerings, UseCases, Contact (+ .css each)
-│       ├── styles/global.css       Design tokens and base styles
+│       ├── styles/global.css       Design tokens, base styles, shared utilities
 │       └── utils/structuredData.js JSON-LD builders
 └── server/                         Express API
     ├── index.js                    App bootstrap, middleware, health check
@@ -129,20 +129,27 @@ Renders `null`. Calls `window.scrollTo(0, 0)` on every `pathname` change, so nav
 |---|---|
 | Hero | Animated background and the "The Joy of Creation" pill only — no heading or CTA by design |
 | Partnership | "We partner with leaders on AI and technology strategies." — **this is the page `<h1>`** — plus lead paragraph and the indicators block |
-| Problem | Three cards: Slow Delivery, High Cost & Risk, Inaccessible Technology |
+| Examples of what we do | Industry filter chips over a grid of 18 example tiles. Moved here from Offerings in Oct 2026, replacing a "Strategic Initiatives are getting stuck…" problem framing |
 | Power behind our Offerings | Ava & Ada flow diagram, three capability cards, closing quote |
-| CTA | "Let's achieve your AI strategies together" → Our Story (`/about`), Offerings (`/offerings`) |
+| CTA | "Let's create together" → Our Story (`/about`), Offerings (`/offerings`) |
 
-- **`indicators`** — local array of four `{value, label}`: 80% Work Automated, 15min Prototype Speed, 17+ Years Experience, 7% Increase in Revenue.
+- **`PERFORMANCE_INDICATORS`** — four `{value, label}` imported from [indicators.js](client/src/constants/indicators.js), **not** declared here: 80% Work Automated, 15min Prototype Speed, 7% Month 1 Increase in Revenue, 80% Prediction Accuracy on Payment Collection. [UseCases.jsx](client/src/pages/UseCases.jsx) renders the same array, so the two pages cannot drift. Edit the constant, not the pages.
 - **The `<h1>` lives in the partnership section, not the hero** — the hero carries no heading by design, so the outline starts one section down. The heading is sized by `.partnership-section .section-title`, which out-specifies the bare `h1` rule in `global.css`, so it renders identically to the `<h2>` it replaced. Changing its tag or that selector will change the visual design.
-- **Scroll-theme effect** — a `scroll` listener maps viewport offset onto the four `AnimatedBackground` themes (`default` → `solution` → `problem` → `acceleration`) at 0.8/1.8/2.8 viewport-height thresholds. **These thresholds are tuned to this page's four sections**; adding or removing a section requires retuning them or the background shifts stop lining up.
+
+**The examples filter — read before editing.** Two module-level consts drive it: `INDUSTRIES` (nine `{id, label}` chips — `all`, finance, banking, insurance, cybersecurity, telecoms, retail, insights, rnd) and `examples` (18 `{title, summary, industries}`). One piece of `industry` state selects the active chip.
+
+- Under `'all'` a tile shows its `summary`; under any other id it shows `industries[id]`.
+- **Presence of a key in a tile's `industries` map is also what decides whether that tile appears at all** under that chip — `visibleExamples` filters on it. So adding an industry is a *content* job, not a markup one: a new chip with no copy added to any example renders an empty grid. Current coverage is 17 of 18 tiles for both `telecoms` and `retail`; "Claims and benefits processing" is deliberately insurance-only.
+- **Tiles set their own `initial`/`animate` instead of inheriting a `fadeInUp` variant.** The section's `whileInView` gesture fires once and then freezes, so a variant child mounting later — which is exactly what a filter change does — would have no state to animate to and would stay invisible. If you "tidy" these onto the shared variant, filtering silently blanks the grid.
+- The `aria-live` count paragraph exists because filtering otherwise changes the grid with no announcement at all.
 
 #### [About.jsx](client/src/pages/About.jsx) — **Active**
 
-Order is deliberate: Hero → 17+ Years banner → Philosophy → **Our Practice → Our Values → Our Leadership**. Leadership sits *below* Values as specified.
+Order is deliberate: Hero → **Who we are → Our Practice → Our Values → Our Leadership** → CTA. Leadership sits *below* Values as specified.
 
-- **`philosophyPillars`** — three `{title, description}`.
-- **`leadership`** — two `{name, title, photo, photoClass}`: Arthur Procopos (CEO and Innovation Officer), Calvin Nigrini (CTO and Information Officer). `photoClass` carries a per-person `object-position` correction so the crop frames each face.
+- **`leadership`** — two `{name, title, photo, photoClass}`: Arthur Procopos (CEO and Innovation Officer), Calvin Nigrini (CTO and Information Officer). `photoClass` carries a per-person `object-position` correction so the crop frames each face. This is the page's only data array; every other section is literal JSX.
+- **Who we are, Our Practice and Our Values share the `.statement-block` wrapper** — same measure, same type scale, differing only in the section tint. A new statement-style subsection should reuse it rather than introduce a fourth variant.
+- **One content measure for the whole page.** [About.css](client/src/pages/About.css) gives `.about-hero-content`, `.statement-block` and `.about-block` a single `max-width: 900px; margin: 0 auto` rule, so the hero and every subsection below it share one left edge. Before this, the hero sat in a centred 900px box while the subsections ran flush to the container edge roughly 118px further out, and the page read as misaligned. **Setting a width on an individual section re-introduces that bug** — change the shared rule instead.
 - Emits two `getPersonSchema` blocks plus `getWebPageSchema`.
 
 #### [Offerings.jsx](client/src/pages/Offerings.jsx) — **Active**
@@ -151,18 +158,22 @@ Order is deliberate: Hero → 17+ Years banner → Philosophy → **Our Practice
 |---|---|---|
 | `analyticsServices` | **Active** | 8 `{service, outcome}` rows — Advanced Analytics, Insights, and AI Services |
 | `softwareServices` | **Active** | 8 `{service, outcome}` rows — Design, Product, and Software Track |
-| `examples` | **Active** | 18 strings rendered as a multi-column grid |
 | `ServiceTable` | **Active** | Local presentational component, used twice |
 
-`ServiceTable({ rows, caption })` renders a real `<table>` with a visually-hidden `<caption>`, `<th scope="col">` headers, and `<th scope="row">` for the service name. Each `<td>` carries `data-label`, which the CSS surfaces as a pseudo-element heading when the table collapses to stacked cards below 640px.
+Section order: Hero → Advanced Analytics → Design/Product/Software → For Startups → CTA. The page tint alternates down that order — analytics plain, software tinted, startups plain, CTA tinted — so **adding or removing a section means re-checking which ones carry `background: rgba(255,255,255,0.015)`**, or you get two tinted blocks in a row.
+
+`ServiceTable({ rows, caption })` renders a real `<table>` with a visually-hidden `<caption>`, `<th scope="col">` headers, and `<th scope="row">` for the service name. Each `<td>` carries `data-label`, which the CSS surfaces as a pseudo-element heading when the table collapses to stacked cards below 640px. The `.visually-hidden` class it relies on lives in [global.css](client/src/styles/global.css), not in `Offerings.css`.
 
 All pricing was removed in the Oct 2026 overhaul — there is no `$13,500`, no comparison table, and `getServiceSchema()` no longer advertises an `offers` block.
+
+The "Examples of what we do" section **moved to [Home.jsx](client/src/pages/Home.jsx)** in Oct 2026; its data arrays, filter state and CSS went with it. Nothing of it remains here.
 
 #### [UseCases.jsx](client/src/pages/UseCases.jsx) — **Active**
 
 Holds the three sections moved off About: track record, outcome stats, partner carousel.
 
 - **`trackRecord`** — six `{title, description}` project summaries.
+- **"Built on Trust and Results"** maps `PERFORMANCE_INDICATORS` from [indicators.js](client/src/constants/indicators.js) — the same four figures Home shows. It previously hardcoded three different ones (80% Prediction Accuracy, 7% Increased Revenue, 58% Client Conversion), which had already drifted from Home's set; the 58% figure appeared nowhere else on the site. `.value-item` carries a fixed flex basis so the four labels wrap into even columns instead of a ragged row.
 - **`partners`** — four `{name, logo}`: Abacus Insurance, Advanced Health Intelligence (ahi), Metropolitan (`/partners/mmi-holdings.png`, relabelled), Precium. A commented line holds the slot for a future `sens.png`.
 - **Carousel geometry — read before editing.** Four module-level constants drive the loop:
 
@@ -181,12 +192,13 @@ Holds the three sections moved off About: track record, outcome stats, partner c
 - `handleChange` — single generic handler keyed on `e.target.name`.
 - `handleSubmit` — POSTs JSON to `/api/contact`; on `response.ok` shows success and clears the form, otherwise surfaces `data.error`. A thrown fetch (network failure) falls back to a message naming the direct email address. `isSubmitting` is cleared in `finally`, so the button always re-enables.
 - Required fields are enforced in the browser via `required` *and* server-side — see §5.
+- Section order: Hero → Contact details + form → CTA. The closing `contact-cta` ("Still not sure?" → Our Story `/about`, Offerings `/offerings`) was added in Oct 2026; before that this was the only page with no closing section, so it dead-ended after the form. It follows the same `cta-content` / `cta-buttons` pattern as the other four pages, which is why `Link` is imported here.
 
 ### [AnimatedBackground.jsx](client/src/animations/AnimatedBackground.jsx) — **Active**
 
-A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: filled sine waves, straight-line connections between nearby particles, and the particles themselves. Driven by `requestAnimationFrame`; the loop is cancelled on unmount and re-created when `dimensions` or `theme` change. Particle count scales with viewport area (`width * height / 15000`); connections are drawn between pairs closer than 150px.
+A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: filled sine waves, straight-line connections between nearby particles, and the particles themselves. Driven by `requestAnimationFrame`; the loop is cancelled on unmount and re-created when `dimensions` change. Particle count scales with viewport area (`width * height / 15000`); connections are drawn between pairs closer than 150px.
 
-**The `theme` prop** takes `default | problem | solution | acceleration`. After the greyscale redesign these no longer encode *hue* — every layer draws white, and the theme selects an **alpha** (a step along the greyscale ramp), so sections still read as distinct without colour.
+**It takes no props.** One greyscale level site-wide: every layer draws white, the background reads identically on all five pages, and it does not shift as you scroll. Each page mounts its own `<AnimatedBackground />` as the first child. An earlier version accepted a `theme` prop (`default | problem | solution | acceleration`) driven by a scroll listener on Home; both were removed with the greyscale redesign.
 
 > **Alpha accumulation — the trap in this file.** The canvas is never fully cleared; each frame paints `rgba(0,0,0,0.12)` over the previous one. Three wave bands then fill *down to the bottom edge* every frame. Those alphas therefore accumulate toward roughly `sum / (sum + clearAlpha)`, not toward their nominal value. With the original cyan-on-navy values (~0.03 each) the asymptote is about **44% white** — a solid grey slab across the lower half of every page that dropped body text to ~3.4:1 contrast. The wave alphas are consequently set very low (0.002–0.009). **If you raise them, raise them by a little and check the result after several seconds of running**, not on the first frame — the build-up is invisible initially.
 
@@ -197,6 +209,7 @@ A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: fi
 | [animations.js](client/src/constants/animations.js) | `fadeInUp` | **Active** | `{opacity 0, y 60}` → `{opacity 1, y 0}`, 0.6s. Used on nearly every animated element. |
 | | `staggerContainer` | **Active** | `staggerChildren: 0.2` |
 | | `staggerContainerFast` | **Unused** | `staggerChildren: 0.15`; defined but imported nowhere |
+| [indicators.js](client/src/constants/indicators.js) | `PERFORMANCE_INDICATORS` | **Active** | Four `{value, label}` headline figures. Imported by [Home.jsx](client/src/pages/Home.jsx) (partnership section) and [UseCases.jsx](client/src/pages/UseCases.jsx) ("Built on Trust and Results") — extracted in Oct 2026 precisely because those two had drifted apart while both claiming to be the company's numbers. The two layouts differ (Home a 4-up divided grid, Use Cases a centred flex row); only the data is shared. |
 | [config.js](client/src/constants/config.js) | `SITE_URL` | **Active** | `https://datapulseai.co` — the single source of truth for the public origin. Imported by [SEO.jsx](client/src/components/SEO.jsx) (canonical, OG/Twitter URLs and images) and [structuredData.js](client/src/utils/structuredData.js) (all absolute URLs). |
 | | `CONTACT_EMAILS` | **Active** | `PRIMARY: arthur@datapulseai.co`, `INFO: info@datapulseai.co`. Also consumed by `structuredData.js` for schema `email` fields. |
 | | `COMPANY_INFO` | **Partially wired** | `NAME` and `TAGLINE` ("The Joy of Creation") are exported but not imported anywhere — the tagline is still duplicated as literals in `index.html` and `SEO.jsx` |
@@ -248,7 +261,7 @@ Follow this pattern for any new page.
 
 **`.gradient-text`.** Retained for markup compatibility — it is applied via `<span className="gradient-text">` in several headings. Now a white → `#b5b5b5` ramp (clipped to the text), with no hue. The dim end stops at `#b5b5b5` (~9.7:1 on black) so the accent never costs legibility.
 
-Also in `global.css`: a visible `:focus-visible` outline for keyboard users, and a `prefers-reduced-motion` block that collapses animation and transition durations.
+Also in `global.css`: a visible `:focus-visible` outline for keyboard users, a `prefers-reduced-motion` block that collapses animation and transition durations, and the `.visually-hidden` utility (screen-reader-only text — used by the service-table captions on Offerings and the filter-count announcement on Home). That utility lived in `Offerings.css` until a second page needed it.
 
 ---
 
@@ -387,7 +400,9 @@ Frontend configuration is compile-time only and lives entirely in [config.js](cl
 | `npm run preview` | `client/` | Serves the built bundle locally |
 | `npm test` | either | **Stub** — echoes and exits 1 |
 
-Current build output: `index.html` ~1.1 kB, CSS ~26.7 kB (5.2 kB gzip), JS ~400 kB (127 kB gzip) — a single chunk, no code splitting.
+Current build output: `index.html` ~1.1 kB, CSS ~24.9 kB (5.0 kB gzip), JS ~411 kB (131 kB gzip) — a single chunk, no code splitting.
+
+`client/dist/` is gitignored, so a fresh clone contains no build output and `npm run build` is a required step before deploying, not a refresh of something already in the repo.
 
 Production runs nginx (static + TLS + `/api` reverse proxy) with the Express app under PM2. **nginx must fall back to `index.html` for unknown paths** or client-side routes 404 on refresh. Full procedure, SSL, PM2 config, and rollback steps are in [DEPLOYMENT-README.md](DEPLOYMENT-README.md).
 
@@ -411,7 +426,6 @@ Roughly ordered by impact.
 | 10 | `foundingDate` vs "Since 2024" | **Inconsistency** | Schema says `2020`; the About page says "Since 2024". One of them is wrong. |
 | 11 | Tagline duplicated as literals | **Minor** | `COMPANY_INFO.TAGLINE` exists but nothing imports it; the string is repeated in `index.html` and `SEO.jsx`. `index.html` is static so it cannot consume the constant, but `SEO.jsx` could. (The site *URL* was centralised as `SITE_URL` and is no longer duplicated.) |
 | 12 | Unused exports | **Cleanup** | `staggerContainerFast`, `getLocalBusinessSchema`, `getBreadcrumbSchema` are defined and imported nowhere. |
-| 13 | Orphaned assets | **Cleanup** | `public/team/riaan.jpg` (unreferenced since the leadership change); **23 of 27** files in `public/partners/` unreferenced, including near-duplicate naming variants of the same logo (`abacus insurance.png` / `abacus-insurance.png`, `LG innotech.png` / `lg-innotek.png`, `Maxim_Integrated.png` / `maxim-integrated.png`, `Hannover_RE.svg` / `hannover-re.svg` / `hannover-re.png`, `Sony-Ericsson-Logo.png` / `sony-ericsson.png`, `nokia.svg` / `nokia.png`); the whole `public/partners.backup/` directory (21 more files); and a stray `nul` file at the repo root (a Windows shell-redirect artefact, safe to delete). |
+| 13 | Orphaned assets | **Cleanup** | `public/team/riaan.jpg` (unreferenced since the leadership change); **23 of 27** files in `public/partners/` unreferenced, including near-duplicate naming variants of the same logo (`abacus insurance.png` / `abacus-insurance.png`, `LG innotech.png` / `lg-innotek.png`, `Maxim_Integrated.png` / `maxim-integrated.png`, `Hannover_RE.svg` / `hannover-re.svg` / `hannover-re.png`, `Sony-Ericsson-Logo.png` / `sony-ericsson.png`, `nokia.svg` / `nokia.png`); the whole `public/partners.backup/` directory (21 more files); and a stray `nul` file at the repo root (a Windows shell-redirect artefact, now gitignored; still safe to delete). |
 | 14 | Missing partner logo | **Blocked on asset** | A "Sens" logo was requested for the carousel but no file exists. A commented placeholder sits in [UseCases.jsx](client/src/pages/UseCases.jsx); drop `sens.png` into `public/partners/` and uncomment. |
-| 15 | `README.md` is stale | **Open** | Still describes the pre-overhaul site: a Services page, "25+ years", and the Acceleration Engine pitch. Superseded by this document and [PROJECT-SUMMARY.md](PROJECT-SUMMARY.md). |
-| 16 | Single 400 kB JS chunk | **Optimisation** | No route-level code splitting. `React.lazy` per route would cut first load. |
+| 15 | Single 411 kB JS chunk | **Optimisation** | No route-level code splitting. `React.lazy` per route would cut first load. |

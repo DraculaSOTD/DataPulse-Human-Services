@@ -61,6 +61,25 @@ const About = () => {
         </div>
       </section>
 
+      {/* Who We Are */}
+      <section className="who-we-are-section section-sm">
+        <div className="container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={staggerContainer}
+            className="statement-block"
+          >
+            <motion.h2 variants={fadeInUp}>Who we are</motion.h2>
+            <motion.p variants={fadeInUp}>
+              We are a community of people dedicated to understanding human-technology
+              dynamics and helping companies solve their most challenging questions.
+            </motion.p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Our Practice */}
       <section className="practice-section section-sm">
         <div className="container">
@@ -94,8 +113,8 @@ const About = () => {
           >
             <motion.h2 variants={fadeInUp}>Our Values</motion.h2>
             <motion.p variants={fadeInUp}>
-              We are the most anti-AI, AI business. Technology without humans is at best boring.
-              It's not about humans out of or on the loop or anywhere else but in the loop.
+              We are anti-automate everything. Technology without humans is at best boring
+              and will lose its soul.
             </motion.p>
           </motion.div>
         </div>
@@ -109,6 +128,7 @@ const About = () => {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={staggerContainer}
+            className="about-block"
           >
             <motion.h2 variants={fadeInUp} className="subsection-title">
               Our Leadership

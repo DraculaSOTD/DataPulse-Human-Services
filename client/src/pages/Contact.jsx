@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import SEO from '../components/SEO';
 import { fadeInUp, staggerContainer } from '../constants/animations';
@@ -66,7 +67,7 @@ const Contact = () => {
     <div className="contact">
       <SEO
         title="Contact Us"
-        description="Get in touch with DataPulse AI to transform your innovation backlog into delivered results. We typically respond within 24 hours. Flexible engagement models for every stage."
+        description="Get in touch with DataPulse AI to turn your strategies into delivered results. We typically respond within 24 hours. Flexible engagement models for every stage."
         keywords="contact DataPulse AI, AI development inquiry, software development consultation, tech partnership contact, startup development contact"
         structuredData={[getWebPageSchema('/contact', 'Contact Us - DataPulse AI', 'Get in touch to discuss how we can accelerate your innovation delivery.')]}
       />
@@ -86,7 +87,7 @@ const Contact = () => {
             </motion.h1>
 
             <motion.p className="contact-intro" variants={fadeInUp}>
-              Ready to transform your innovation backlog into delivered results?
+              Ready to turn your strategies into delivered results?
               We'd love to hear from you.
             </motion.p>
           </motion.div>
@@ -237,6 +238,32 @@ const Contact = () => {
         </div>
       </section>
 
+      {/* CTA Section */}
+      <section className="contact-cta section-sm">
+        <div className="container">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+            className="cta-content"
+          >
+            <h2>Still not sure?</h2>
+            <p>
+              We are happy to meet and have a general discussion until you make up your mind.
+              Otherwise, take a look at our story and offerings.
+            </p>
+            <div className="cta-buttons">
+              <Link to="/about" className="btn btn-primary">
+                Our Story
+              </Link>
+              <Link to="/offerings" className="btn btn-secondary">
+                Offerings
+              </Link>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };

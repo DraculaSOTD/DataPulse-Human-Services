@@ -132,6 +132,20 @@ select:focus-visible {
   padding: 4rem 0;
 }
 
+/* Available to assistive technology only — used for table captions and for
+   announcing changes a sighted user reads straight off the page. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Subsection heading — a visually demoted section title for a block that
    sits inside a larger narrative rather than opening one. Stays an <h2>
    in the markup so the document outline is unaffected. */

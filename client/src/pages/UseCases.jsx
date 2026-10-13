@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import SEO from '../components/SEO';
 import { fadeInUp, staggerContainer } from '../constants/animations';
+import { PERFORMANCE_INDICATORS } from '../constants/indicators';
 import { getWebPageSchema } from '../utils/structuredData';
 import './UseCases.css';
 
@@ -119,18 +120,12 @@ const UseCases = () => {
             </motion.h2>
 
             <motion.div className="values-grid" variants={fadeInUp}>
-              <div className="value-item">
-                <h3>80%</h3>
-                <p>Prediction Accuracy</p>
-              </div>
-              <div className="value-item">
-                <h3>7%</h3>
-                <p>Increased Revenue</p>
-              </div>
-              <div className="value-item">
-                <h3>58%</h3>
-                <p>Client Conversion</p>
-              </div>
+              {PERFORMANCE_INDICATORS.map((indicator) => (
+                <div className="value-item" key={indicator.label}>
+                  <h3>{indicator.value}</h3>
+                  <p>{indicator.label}</p>
+                </div>
+              ))}
             </motion.div>
 
             <motion.p className="values-description" variants={fadeInUp}>

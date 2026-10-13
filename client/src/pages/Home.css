@@ -124,70 +124,87 @@
   line-height: 1.5;
 }
 
-/* Problem Section */
-.problem-section {
-  background: rgba(255, 255, 255, 0.015);
-  border-top: 1px solid var(--border);
-}
-
-.problem-content {
-  text-align: center;
-}
-
 .section-title {
   margin-bottom: 3rem;
   text-align: center;
 }
 
-.problem-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 3rem;
+/* Examples of what we do */
+.examples-section {
+  background: rgba(255, 255, 255, 0.015);
+  border-top: 1px solid var(--border);
 }
 
-.problem-card {
+.examples-section .section-title {
+  margin-bottom: 2.5rem;
+}
+
+/* Industry filter chips — centred to sit under the centred section title */
+.industry-filter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Selection inverts to white-on-black rather than shifting hue, so the
+   active chip is unmistakable in a greyscale system. */
+.industry-chip {
+  padding: 0.5rem 1.125rem;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.industry-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.industry-chip[aria-pressed="true"] {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--black);
+}
+
+/* Example tiles */
+.examples-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.example-item {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 2.5rem;
-  transition: all 0.3s ease;
-  text-align: left;
+  padding: 1.5rem;
+  transition: var(--transition);
 }
 
-.problem-card:hover {
+.example-item:hover {
   border-color: var(--border-strong);
   background: var(--surface-raised);
 }
 
-.card-icon {
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 1.5rem;
-  color: var(--white);
-}
-
-.card-icon svg {
-  width: 26px;
-  height: 26px;
-}
-
-.problem-card h3 {
-  font-size: 1.375rem;
-  margin-bottom: 1rem;
+.example-title {
+  font-size: 1.0625rem;
+  margin-bottom: 0.75rem;
   color: var(--text-primary);
 }
 
-.problem-card p {
+.example-detail {
   color: var(--text-secondary);
-  line-height: 1.8;
-  font-size: 1rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
 }
 
 /* Power Behind Our Offerings */

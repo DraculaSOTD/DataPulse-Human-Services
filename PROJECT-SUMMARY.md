@@ -15,6 +15,8 @@ A five-page single-page application with a small Express API behind it. The only
 
 The site was substantially overhauled in October 2026: repositioned from a fixed-price "on-demand AI & software squad" to a consultancy, restyled from a cyan/blue/purple palette to a black-and-white greyscale system, and restructured (Services became Offerings, a new Use Cases page was added).
 
+A second content pass followed later the same month: Home dropped its "Strategic Initiatives are getting stuck…" problem framing in favour of the industry-filtered "Examples of what we do" grid moved up from Offerings, which also gained Telecommunications and Retail filters; About gained a "Who we are" section and a single content measure shared by every section; the headline performance indicators were centralised so Home and Use Cases show the same figures; and Contact gained a closing CTA.
+
 ## Stack
 
 | Layer | Technology |
@@ -31,11 +33,11 @@ Verified on Node v24.13.0 / npm 11.4.2.
 
 | Route | Purpose |
 |---|---|
-| `/` | Home — hero (animated background + "The Joy of Creation" pill), the partnership statement with four performance indicators, the problem framing, "Power behind our Offerings" (Ava & Ada), and a closing CTA |
-| `/about` | Who the company is — positioning, 17+ years banner, Philosophy, Our Practice, Our Values, and Our Leadership (Arthur Procopos, Calvin Nigrini) |
-| `/offerings` | Two service catalogues as tables — "Advanced Analytics, Insights, and AI Services" and the "Design, Product, and Software Track" — plus the startup partnership model and 18 examples of delivered work |
-| `/use-cases` | Track record: six project case summaries, three outcome statistics, and a looping partner logo carousel |
-| `/contact` | Contact details and the form that posts to the API |
+| `/` | Home — hero (animated background + "The Joy of Creation" pill), the partnership statement with four performance indicators, "Examples of what we do" (18 examples filterable by nine industries), "Power behind our Offerings" (Ava & Ada), and a closing CTA |
+| `/about` | Who the company is — positioning, Who we are, Our Practice, Our Values, and Our Leadership (Arthur Procopos, Calvin Nigrini) |
+| `/offerings` | Two service catalogues as tables — "Advanced Analytics, Insights, and AI Services" and the "Design, Product, and Software Track" — plus the startup partnership model |
+| `/use-cases` | Track record: six project case summaries, the four performance indicators (shared with Home), and a looping partner logo carousel |
+| `/contact` | Contact details, the form that posts to the API, and a closing CTA |
 | `/services` | Redirects to `/offerings` (the page was renamed; old links still resolve) |
 
 ## Running it locally

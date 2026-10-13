@@ -61,6 +61,7 @@ That's it! The script handles everything automatically.
 - Runs `npm run build` in client directory
 - Creates optimized production build in `client/dist/`
 - Includes all SEO optimizations, meta tags, and assets
+- **Mandatory, not a refresh.** `client/dist/` is gitignored, so a fresh clone has no build output. Client dependencies must already be installed — with `--legacy-peer-deps` (see the project README), or Vite will be missing and the build fails.
 
 ### Step 3: Prepare Backend
 - Ensures backend dependencies are installed
@@ -110,7 +111,12 @@ That's it! The script handles everything automatically.
 - **Main Website**: https://datapulseai.co
 - **WWW**: https://www.datapulseai.co (same as main)
 - **API Endpoint**: https://datapulseai.co/api/*
+- **Offerings**: https://datapulseai.co/offerings
+- **Use Cases**: https://datapulseai.co/use-cases
+- **About**: https://datapulseai.co/about
 - **Contact Form**: https://datapulseai.co/contact
+
+All five are client-side routes, so nginx must fall back to `index.html` for unknown paths or a hard refresh on any of them returns 404. `/services` is a legacy redirect to `/offerings`.
 
 ---
 
@@ -370,7 +376,8 @@ cat /srv/http/datapulseai/.env
 After deployment, verify:
 
 - [ ] Website loads at https://datapulseai.co
-- [ ] All pages are accessible (Home, Services, About, Contact)
+- [ ] All pages are accessible (Home, Offerings, Use Cases, About, Contact)
+- [ ] Legacy /services redirects to /offerings
 - [ ] SSL certificate shows padlock in browser
 - [ ] HTTP automatically redirects to HTTPS
 - [ ] www.datapulseai.co works (redirects to main domain)
@@ -459,4 +466,4 @@ With all features:
 - PM2: `pm2 logs datapulseai-backend`
 - Nginx: `sudo tail -f /var/log/nginx/datapulseai-error.log`
 
-**Last Updated**: 2025-10-13
+**Last Updated**: 2026-10-12
