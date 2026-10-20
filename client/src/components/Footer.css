@@ -1,0 +1,45 @@
+/* Persistent site chrome. `position: relative` lifts it above the fixed
+   AnimatedBackground, which sits at z-index: -1. */
+.site-footer {
+  position: relative;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.015);
+  padding: 2rem 0;
+}
+
+/* Flex so the three items wrap as whole phrases on narrow screens instead of
+   breaking mid-sentence. The font-size is explicit because the global `p`
+   rule would otherwise scale this up to body-copy size. */
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--grey-mid);
+  text-align: center;
+}
+
+.footer-sep {
+  margin: 0 0.75rem;
+  color: var(--border-strong);
+}
+
+/* Global `a` is white and dims on hover. Inverted here: against a muted grey
+   line, starting dimmer and brightening is what reads as a link. */
+.site-footer a {
+  color: var(--text-secondary);
+}
+
+.site-footer a:hover {
+  color: var(--white);
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .footer-sep {
+    margin: 0 0.5rem;
+  }
+}

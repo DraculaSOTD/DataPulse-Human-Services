@@ -30,7 +30,7 @@ PRODUCTION
 
 **The `/api` boundary.** The frontend never calls the API by absolute URL. [Contact.jsx](client/src/pages/Contact.jsx) fetches the relative path `/api/contact`; in development [vite.config.js](client/vite.config.js) proxies that to `http://localhost:5000`, and in production nginx routes it. This is why the site must be used via port 3000 in development — loading port 5000 directly gives you the API only.
 
-**Client-side routing.** All five routes are resolved in the browser by React Router; the server only ever serves `index.html`. **Any production host must rewrite unknown paths to `index.html`**, or a hard refresh on `/about` returns 404. The Vite dev server does this automatically.
+**Client-side routing.** All six routes — plus the two legacy redirects — are resolved in the browser by React Router; the server only ever serves `index.html`. **Any production host must rewrite unknown paths to `index.html`**, or a hard refresh on `/about` returns 404. The Vite dev server does this automatically.
 
 **No persistence layer.** There is no database, ORM, session store, or auth. A contact submission's entire lifecycle is: POST → validate → log to stdout → send two emails → respond.
 
@@ -44,7 +44,7 @@ PRODUCTION
 │   ├── public/
 │   │   ├── partners/               27 logo files — only 4 referenced
 │   │   ├── team/                   arthur.jpg, calvin.jpg (+ riaan.jpg, unused)
-│   │   ├── sitemap.xml             5 URLs
+│   │   ├── sitemap.xml             6 URLs
 │   │   ├── robots.txt, site.webmanifest, favicon-*.png, og-image.png
 │   │   ├── maintenance.html        Static holding page used by the nginx gate
 │   │   └── partners.backup/        Orphaned duplicate of partners/
@@ -52,9 +52,9 @@ PRODUCTION
 │       ├── main.jsx                ReactDOM root
 │       ├── App.jsx                 Providers, route table
 │       ├── animations/             AnimatedBackground (canvas)
-│       ├── components/             Navigation, SEO, ScrollToTop
+│       ├── components/             Navigation, Footer, SEO, ScrollToTop
 │       ├── constants/              animations.js, config.js, indicators.js
-│       ├── pages/                  Home, About, Offerings, UseCases, Contact (+ .css each)
+│       ├── pages/                  Home, About, Offerings, UseCases, Contact, PrivacyPolicy (+ .css each)
 │       ├── styles/global.css       Design tokens, base styles, shared utilities
 │       └── utils/structuredData.js JSON-LD builders
 └── server/                         Express API
@@ -74,7 +74,7 @@ PRODUCTION
 | File | Exports | Status | Notes |
 |---|---|---|---|
 | [main.jsx](client/src/main.jsx) | — | **Active** | Mounts `<App />` into `#root`. No `StrictMode` wrapper. |
-| [App.jsx](client/src/App.jsx) | `App` | **Active** | Wraps the tree in `HelmetProvider` → `Router` → `ScrollToTop` + `Navigation` + `<Routes>`. |
+| [App.jsx](client/src/App.jsx) | `App` | **Active** | Wraps the tree in `HelmetProvider` → `Router` → `ScrollToTop` + `Navigation` + `<main><Routes></main>` + `Footer`. Both `Navigation` and `Footer` sit **outside** the routed area, so they render on every page without each page having to mount them. |
 
 **Route table** ([App.jsx](client/src/App.jsx)):
 
@@ -85,7 +85,9 @@ PRODUCTION
 | `/offerings` | `Offerings` | **Active** |
 | `/use-cases` | `UseCases` | **Active** |
 | `/contact` | `Contact` | **Active** |
+| `/privacy-policy` | `PrivacyPolicy` | **Active** — reached from the footer link; deliberately absent from `navLinks` |
 | `/services` | `<Navigate to="/offerings" replace />` | **Active** — legacy redirect; the page was renamed in the Oct 2026 overhaul and this keeps old inbound links and search results alive |
+| `/privacy` | `<Navigate to="/privacy-policy" replace />` | **Active** — the shorthand people type and link to; same alias pattern as `/services` |
 
 There is **no catch-all `*` route** — an unknown path renders the header and an empty `<main>`. See Known Issues.
 
@@ -120,6 +122,19 @@ The origin comes from `SITE_URL` in [config.js](client/src/constants/config.js) 
 #### [ScrollToTop.jsx](client/src/components/ScrollToTop.jsx) — **Active**
 
 Renders `null`. Calls `window.scrollTo(0, 0)` on every `pathname` change, so navigation starts at the top rather than inheriting the previous page's scroll offset.
+
+#### [Footer.jsx](client/src/components/Footer.jsx) — **Active**
+
+One centred line of legal chrome on every page: `© 2024–<year> DataPulse AI | All rights reserved | Privacy Policy`. Stateless, no props.
+
+- **The year range end is derived, not written down.** `FOUNDING_YEAR = 2024` (matching registration no. 2024/530497/07) is compared against `new Date().getFullYear()`, so the notice cannot go stale and collapses to a single year if the two ever match.
+- The company name comes from `COMPANY_INFO.NAME` in [config.js](client/src/constants/config.js) rather than a literal — this is the first and so far only consumer of that constant.
+- The `|` separators are `<span aria-hidden="true">`, so a screen reader reads a clean sentence instead of announcing pipe characters between every item.
+- **No framer-motion, deliberately.** `Navigation` animates because it enters once; a footer outside the routed area would re-animate on every route change, which reads as noise rather than polish.
+- **`position: relative` is load-bearing**, not decoration — without it the footer sits behind the fixed `z-index: -1` canvas.
+- It **inverts the global link convention**: `global.css` makes links `--white` and dims them on hover, but inside a muted `--grey-mid` line that reads backwards, so `.site-footer a` starts at `--text-secondary` and brightens to `--white` with an underline. Keyboard focus still comes from the global `a:focus-visible` outline.
+
+The link is a react-router `<Link to="/privacy-policy">`, so it navigates client-side like every other internal link on the site.
 
 ### Pages
 
@@ -194,11 +209,32 @@ Holds the three sections moved off About: track record, outcome stats, partner c
 - Required fields are enforced in the browser via `required` *and* server-side — see §5.
 - Section order: Hero → Contact details + form → CTA. The closing `contact-cta` ("Still not sure?" → Our Story `/about`, Offerings `/offerings`) was added in Oct 2026; before that this was the only page with no closing section, so it dead-ended after the form. It follows the same `cta-content` / `cta-buttons` pattern as the other four pages, which is why `Link` is imported here.
 
+#### [PrivacyPolicy.jsx](client/src/pages/PrivacyPolicy.jsx) — **Active**
+
+The company's POPIA privacy policy, reproduced from `DataPulse AI information/DataPulse AI_Website_Privacy_Policy.docx`. Section order: Hero → policy body. **The only page with no closing CTA** — a legal document should not end in a sales pitch — which is also why it imports no `Link`.
+
+**Content shape.** The policy lives in a `POLICY_SECTIONS` array at **module scope**, not inside the component. The other pages declare their small data arrays in-component; thirteen sections of legal text is enough that rebuilding it on every render is pointless work. Each section is `{title, clauses[], note?}` and each clause renders four optional fields in a fixed order:
+
+| Field | Renders as |
+|---|---|
+| `text` | the numbered clause paragraph |
+| `lead` | a paragraph introducing a list |
+| `bullets` | a `<ul>`; an entry may itself be `{text, bullets}` for one level of nesting |
+| `note` | a closing paragraph after the list |
+
+A section-level `note` sits outside the numbered clauses, because the source document leaves those paragraphs unnumbered. `subclauses` adds the third level (e.g. 3.2.1).
+
+**Helpers**, all local to the file: `linkifyEmail` splits a string on `CONTACT_EMAILS.INFO` and wraps the match in a `mailto:` anchor — so every entry in the array stays a plain string and the address itself stays sourced from [config.js](client/src/constants/config.js); `PolicyBullets` recurses for nested bullets; `PolicyClauseBody` enforces the field order above for both clauses and subclauses.
+
+**The document's table of contents is dropped.** The .docx numbers it as clause 1, which would push Introduction to 2 — but the policy's own cross-references are counted from Introduction as 1, so keeping it would make every internal reference wrong. A page-anchor TOC is also meaningless on a single scrollable page.
+
+> **The page and the .docx have deliberately diverged — four corrections.** Clause 7.1 opened with a lowercase "if"; clause 12.4 read "and I again accessible" (a stray "I"); the last bullet of 3.2.3 had its full stop inside the bracket plus a double space. The fourth is structural: the source document dropped its *Children's Data Collection* section without updating the two cross-references that followed it, so "Clause 7" and "Clause 11" both pointed one section too far and are renumbered here to **6** (Sharing and Disclosure) and **10** (Personal Information Rights). **The module header comment in the file is the authoritative record of all four** — read it before re-importing the document, or the next import will silently reintroduce them. See Known Issues.
+
 ### [AnimatedBackground.jsx](client/src/animations/AnimatedBackground.jsx) — **Active**
 
 A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: filled sine waves, straight-line connections between nearby particles, and the particles themselves. Driven by `requestAnimationFrame`; the loop is cancelled on unmount and re-created when `dimensions` change. Particle count scales with viewport area (`width * height / 15000`); connections are drawn between pairs closer than 150px.
 
-**It takes no props.** One greyscale level site-wide: every layer draws white, the background reads identically on all five pages, and it does not shift as you scroll. Each page mounts its own `<AnimatedBackground />` as the first child. An earlier version accepted a `theme` prop (`default | problem | solution | acceleration`) driven by a scroll listener on Home; both were removed with the greyscale redesign.
+**It takes no props.** One greyscale level site-wide: every layer draws white, the background reads identically on all six pages, and it does not shift as you scroll. Each page mounts its own `<AnimatedBackground />` as the first child. An earlier version accepted a `theme` prop (`default | problem | solution | acceleration`) driven by a scroll listener on Home; both were removed with the greyscale redesign.
 
 > **Alpha accumulation — the trap in this file.** The canvas is never fully cleared; each frame paints `rgba(0,0,0,0.12)` over the previous one. Three wave bands then fill *down to the bottom edge* every frame. Those alphas therefore accumulate toward roughly `sum / (sum + clearAlpha)`, not toward their nominal value. With the original cyan-on-navy values (~0.03 each) the asymptote is about **44% white** — a solid grey slab across the lower half of every page that dropped body text to ~3.4:1 contrast. The wave alphas are consequently set very low (0.002–0.009). **If you raise them, raise them by a little and check the result after several seconds of running**, not on the first frame — the build-up is invisible initially.
 
@@ -211,8 +247,8 @@ A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: fi
 | | `staggerContainerFast` | **Unused** | `staggerChildren: 0.15`; defined but imported nowhere |
 | [indicators.js](client/src/constants/indicators.js) | `PERFORMANCE_INDICATORS` | **Active** | Four `{value, label}` headline figures. Imported by [Home.jsx](client/src/pages/Home.jsx) (partnership section) and [UseCases.jsx](client/src/pages/UseCases.jsx) ("Built on Trust and Results") — extracted in Oct 2026 precisely because those two had drifted apart while both claiming to be the company's numbers. The two layouts differ (Home a 4-up divided grid, Use Cases a centred flex row); only the data is shared. |
 | [config.js](client/src/constants/config.js) | `SITE_URL` | **Active** | `https://datapulseai.co` — the single source of truth for the public origin. Imported by [SEO.jsx](client/src/components/SEO.jsx) (canonical, OG/Twitter URLs and images) and [structuredData.js](client/src/utils/structuredData.js) (all absolute URLs). |
-| | `CONTACT_EMAILS` | **Active** | `PRIMARY: arthur@datapulseai.co`, `INFO: info@datapulseai.co`. Also consumed by `structuredData.js` for schema `email` fields. |
-| | `COMPANY_INFO` | **Partially wired** | `NAME` and `TAGLINE` ("The Joy of Creation") are exported but not imported anywhere — the tagline is still duplicated as literals in `index.html` and `SEO.jsx` |
+| | `CONTACT_EMAILS` | **Active** | `PRIMARY: arthur@datapulseai.co`, `INFO: info@datapulseai.co`. Consumed by `structuredData.js` for schema `email` fields, and by [PrivacyPolicy.jsx](client/src/pages/PrivacyPolicy.jsx), whose `linkifyEmail` helper splits the policy text on `INFO` to build the `mailto:` link. |
+| | `COMPANY_INFO` | **Partially wired** | `NAME` is **Active** — [Footer.jsx](client/src/components/Footer.jsx) renders the copyright line from it. `TAGLINE` ("The Joy of Creation") is still imported nowhere, and remains duplicated as literals in `index.html` and `SEO.jsx`. |
 
 #### [structuredData.js](client/src/utils/structuredData.js)
 
@@ -223,7 +259,7 @@ A full-viewport fixed canvas (`z-index: -1`) drawing three layers each frame: fi
 | `getLocalBusinessSchema()` | **Unused** | Defined but imported nowhere — Contact does not use it |
 | `getPersonSchema(name, jobTitle, image)` | **Active** | About (twice). `image` is never passed, so the emitted `image` key is `undefined` and drops out of the JSON. |
 | `getBreadcrumbSchema(items)` | **Unused** | Defined but imported nowhere |
-| `getWebPageSchema(path, name, description)` | **Active** | All five pages. `path` is the **route path** (`'/'`, `'/about'`, …); the absolute URL is built as `` `${SITE_URL}${path}` ``, so the emitted node always matches both the route and [sitemap.xml](client/public/sitemap.xml). Note `name` here legitimately carries the `- DataPulse AI` suffix — unlike the `SEO` `title` prop, it is not re-suffixed. |
+| `getWebPageSchema(path, name, description)` | **Active** | All six pages. `path` is the **route path** (`'/'`, `'/about'`, …); the absolute URL is built as `` `${SITE_URL}${path}` ``, so the emitted node always matches both the route and [sitemap.xml](client/public/sitemap.xml). Note `name` here legitimately carries the `- DataPulse AI` suffix — unlike the `SEO` `title` prop, it is not re-suffixed. |
 
 ---
 
@@ -249,7 +285,9 @@ Defined as custom properties on `:root` in [global.css](client/src/styles/global
 | `--nav-height` | `112px` | Height of the two-row fixed header |
 | `--hero-offset` | `calc(var(--nav-height) + 3rem)` | Top padding every page hero must clear |
 
-**Contrast is a hard requirement**, not a preference: every text node on every page measures **≥ 7.04:1** (WCAG AAA), verified programmatically across all five routes. `--grey-mid` is as dark as the muted tone may go — it lands at roughly 7:1 on `--surface`. Darkening it breaks the guarantee.
+**Contrast is a hard requirement**, not a preference: every text node on every page measures **≥ 7.04:1** (WCAG AAA), verified programmatically across all six routes. `--grey-mid` is as dark as the muted tone may go — it lands at roughly 7:1 on `--surface`. Darkening it breaks the guarantee.
+
+The footer and privacy policy page were measured the same way and clear the floor without moving it. The worst new node is the footer's muted legal line at **7.84:1** (`--grey-mid` over the footer's `rgba(255,255,255,0.015)` band, compositing to `#040404`); the privacy page's muted tones — the eyebrow and the CSS-counter section and clause numbers — sit at **8.03:1** on the page ground, its body copy at **12.04:1**, and its `mailto:` links at **21.00:1**. **The 7.04:1 floor is still set by `--grey-mid` on `--surface` elsewhere**, not by anything added here.
 
 Translucent surfaces are included in that guarantee and are measured against their **composited** value, not their token value: a glass panel is alpha-composited over its section band, which is itself composited over the page ground. The frosted elements all clear the floor comfortably — the worst of them is the resting filter chip at **10.43:1** (`--text-secondary` over `--glass-bg` on the Examples band, compositing to `#151515`), and the bright primary CTA measures **16.08:1** (`--black` over `--glass-bg-bright`, compositing to `#e1e1e1`). **Any new glass surface must be checked the same way** — lowering a `--glass-bg*` opacity moves the composited background toward the ground and can quietly cost several stops of contrast.
 
@@ -274,7 +312,7 @@ A depth layer over the same greyscale palette. No hue, no new colours — only a
 
 **Why every shadow is paired with an inset highlight.** This is the one non-obvious thing in the system. The ground is `#000` and surfaces are `#141414`, so a dark drop shadow on its own is very nearly invisible — the eye has nothing to compare the falloff against. `--edge-light` catches the top edge of the element instead, and that is what actually reads as lift. A shadow applied without it will look like nothing happened, and the instinct to then raise the shadow opacity does not help.
 
-**Glass is confined to interactive chrome.** The frosted treatment is applied to Home's `.industry-chip` filter tabs, the closing-CTA buttons on all five pages, and the Offerings startup button — things the user clicks. Content surfaces (tiles, tables, leadership cards, the contact form) take shadow plus `--border-soft` only and keep their opaque `--surface`, because a page of translucent panels over a moving canvas is unreadable. Two pill elements are **deliberately excluded** and must stay flat: `.hero-tag` (Home's "The Joy of Creation") and `.startup-badge` (Offerings' "For Startups").
+**Glass is confined to interactive chrome.** The frosted treatment is applied to Home's `.industry-chip` filter tabs, the closing-CTA buttons on all five marketing pages, and the Offerings startup button — things the user clicks. (Five, not six: the privacy policy page has no closing CTA.) Content surfaces (tiles, tables, leadership cards, the contact form) take shadow plus `--border-soft` only and keep their opaque `--surface`, because a page of translucent panels over a moving canvas is unreadable. Two pill elements are **deliberately excluded** and must stay flat: `.hero-tag` (Home's "The Joy of Creation") and `.startup-badge` (Offerings' "For Startups").
 
 **The bright/dim split preserves the CTA hierarchy.** Each closing CTA is a pair. If both buttons became dim glass the primary would stop reading as the main action, so the primary takes `--glass-bg-bright` with `--black` text while the secondary takes `--glass-bg`. That is the whole reason two glass fills exist rather than one.
 
@@ -286,7 +324,7 @@ A depth layer over the same greyscale palette. No hue, no new colours — only a
 
 > **`overflow` and `mask-image` clip outer shadows.** `.partner-card` sits inside a masked, `overflow: hidden` carousel and is therefore left flat on purpose. The Offerings table wrapper is fine — `overflow-x: auto` clips its *children*, not the element's own shadow — but below 640px the wrapper drops its frame and each row becomes a card, so the wrapper's shadow is explicitly zeroed in that breakpoint and re-applied per row. **A frame and its shadow must move together.**
 
-### Two conventions worth knowing
+### Three conventions worth knowing
 
 **`--hero-offset` and selector specificity.** `global.css` defines `.section { padding: 5rem 0 }` and `.section-sm { padding: 4rem 0 }` as *shorthands*. Because `global.css` is imported from `App.jsx` it loads **after** the page stylesheets, so a bare `.offerings-hero { padding-top: ... }` in a page file is silently overridden — the symptom is a page heading colliding with the fixed header. Every hero therefore uses a page-scoped selector to win on specificity:
 
@@ -294,13 +332,18 @@ A depth layer over the same greyscale palette. No hue, no new colours — only a
 .offerings .offerings-hero { padding-top: var(--hero-offset); }
 ```
 
-Follow this pattern for any new page.
+Follow this pattern for any new page. [PrivacyPolicy.css](client/src/pages/PrivacyPolicy.css) is the most recent worked example (`.privacy-policy .privacy-hero`), including the matching `@media (max-width: 768px)` override every page hero also carries.
+
+**Numbered legal content uses CSS counters, not typed-in numbers.** The clause numbering on the privacy policy page (`1`, `1.1`, `3.2.1`) is generated entirely in [PrivacyPolicy.css](client/src/pages/PrivacyPolicy.css) from `counter(section)` / `counter(clause)` / `counter(subclause)`, rendered through `::before` into a gutter opened by `padding-left`. The numbers are therefore impossible to desynchronise from the content: when the source document dropped a whole mid-policy section, every following section renumbered itself with **no code change**. Two things to preserve if you touch it:
+
+- The counter lists set `list-style: none` and so must keep their **`role="list"`** — without it Safari/VoiceOver stops treating them as lists at all.
+- Each `::before` repeats the `font-size` and `line-height` of `.policy-text` so the hanging number baselines with the first line of its clause. Below 480px they switch to `position: static; display: block` and sit above the text instead, because the gutter costs too much measure on a narrow screen.
 
 **`.gradient-text`.** Retained for markup compatibility — it is applied via `<span className="gradient-text">` in several headings. Now a white → `#b5b5b5` ramp (clipped to the text), with no hue. The dim end stops at `#b5b5b5` (~9.7:1 on black) so the accent never costs legibility.
 
 Also in `global.css`: a visible `:focus-visible` outline for keyboard users, a `prefers-reduced-motion` block that collapses animation and transition durations, and the `.visually-hidden` utility (screen-reader-only text — used by the service-table captions on Offerings and the filter-count announcement on Home). That utility lived in `Offerings.css` until a second page needed it.
 
-The frosted closing-CTA buttons live there too, as `.cta-buttons .btn-primary` / `.btn-secondary` (plus `.startup-content` for the Offerings startup button). Every page's closing section wraps its pair in the same `.cta-buttons` div, so **one rule block covers all five pages** — the alternative was five near-identical copies in the page stylesheets, which is how `.cta-buttons` itself ended up defined five times. The descendant selector is also what scopes the treatment: it out-specifies the bare `.btn-primary` rule without `!important`, and it deliberately does not reach the Contact form's submit button, which sits in `.contact-form` rather than `.cta-buttons` and stays a solid white button.
+The frosted closing-CTA buttons live there too, as `.cta-buttons .btn-primary` / `.btn-secondary` (plus `.startup-content` for the Offerings startup button). Every closing section wraps its pair in the same `.cta-buttons` div, so **one rule block covers all five marketing pages** — the alternative was five near-identical copies in the page stylesheets, which is how `.cta-buttons` itself ended up defined five times. (The privacy policy page has no closing CTA, so it is not in scope here.) The descendant selector is also what scopes the treatment: it out-specifies the bare `.btn-primary` rule without `!important`, and it deliberately does not reach the Contact form's submit button, which sits in `.contact-form` rather than `.cta-buttons` and stays a solid white button.
 
 ---
 
@@ -439,7 +482,7 @@ Frontend configuration is compile-time only and lives entirely in [config.js](cl
 | `npm run preview` | `client/` | Serves the built bundle locally |
 | `npm test` | either | **Stub** — echoes and exits 1 |
 
-Current build output: `index.html` ~1.1 kB, CSS ~27.6 kB (5.4 kB gzip), JS ~411 kB (131 kB gzip) — a single chunk, no code splitting.
+Current build output: `index.html` ~1.1 kB, CSS ~30.9 kB (5.9 kB gzip), JS ~433.8 kB (138.0 kB gzip) — a single chunk, no code splitting.
 
 `client/dist/` is gitignored, so a fresh clone contains no build output and `npm run build` is a required step before deploying, not a refresh of something already in the repo.
 
@@ -463,8 +506,9 @@ Roughly ordered by impact.
 | 8 | Permissive CORS | **Review** | `cors()` with no options allows any origin. Harmless behind single-domain nginx; tighten if the API is ever exposed directly. |
 | 9 | Stale copy and palette in email templates | **Open** | "Acceleration Engine"/"backlog" language and cyan `#64ffda` in [contactEmail.js](server/templates/contactEmail.js). See §5. |
 | 10 | `foundingDate` vs "Since 2024" | **Inconsistency** | Schema says `2020`; the About page says "Since 2024". One of them is wrong. |
-| 11 | Tagline duplicated as literals | **Minor** | `COMPANY_INFO.TAGLINE` exists but nothing imports it; the string is repeated in `index.html` and `SEO.jsx`. `index.html` is static so it cannot consume the constant, but `SEO.jsx` could. (The site *URL* was centralised as `SITE_URL` and is no longer duplicated.) |
+| 11 | Tagline duplicated as literals | **Minor** | `COMPANY_INFO.TAGLINE` exists but nothing imports it; the string is repeated in `index.html` and `SEO.jsx`. `index.html` is static so it cannot consume the constant, but `SEO.jsx` could. (`COMPANY_INFO.NAME` is no longer in this position — [Footer.jsx](client/src/components/Footer.jsx) consumes it. The site *URL* was centralised as `SITE_URL` and is no longer duplicated either.) |
 | 12 | Unused exports | **Cleanup** | `staggerContainerFast`, `getLocalBusinessSchema`, `getBreadcrumbSchema` are defined and imported nowhere. |
 | 13 | Orphaned assets | **Cleanup** | `public/team/riaan.jpg` (unreferenced since the leadership change); **23 of 27** files in `public/partners/` unreferenced, including near-duplicate naming variants of the same logo (`abacus insurance.png` / `abacus-insurance.png`, `LG innotech.png` / `lg-innotek.png`, `Maxim_Integrated.png` / `maxim-integrated.png`, `Hannover_RE.svg` / `hannover-re.svg` / `hannover-re.png`, `Sony-Ericsson-Logo.png` / `sony-ericsson.png`, `nokia.svg` / `nokia.png`); the whole `public/partners.backup/` directory (21 more files); and a stray `nul` file at the repo root (a Windows shell-redirect artefact, now gitignored; still safe to delete). |
 | 14 | Missing partner logo | **Blocked on asset** | A "Sens" logo was requested for the carousel but no file exists. A commented placeholder sits in [UseCases.jsx](client/src/pages/UseCases.jsx); drop `sens.png` into `public/partners/` and uncomment. |
-| 15 | Single 411 kB JS chunk | **Optimisation** | No route-level code splitting. `React.lazy` per route would cut first load. |
+| 15 | Single ~434 kB JS chunk | **Optimisation** | No route-level code splitting. `React.lazy` per route would cut first load. The privacy policy page is a good first candidate: it carries ~21 kB of legal text that no other route needs. |
+| 16 | Privacy policy page has diverged from its source document | **Tracked, needs a doc edit** | Four corrections live only in [PrivacyPolicy.jsx](client/src/pages/PrivacyPolicy.jsx) and not in `DataPulse AI_Website_Privacy_Policy.docx`: three typographical (clause 7.1 lowercase "if", clause 12.4 stray "I", clause 3.2.3 bracket/spacing) and one substantive — the document dropped its *Children's Data Collection* section without renumbering the two cross-references that followed, so "Clause 7"/"Clause 11" are wrong **in the document itself** and are corrected to 6/10 on the page. Fix by carrying all four back into the .docx; until then, any re-import silently reintroduces them. The file's module header comment is the authoritative list. |

@@ -115,8 +115,9 @@ That's it! The script handles everything automatically.
 - **Use Cases**: https://datapulseai.co/use-cases
 - **About**: https://datapulseai.co/about
 - **Contact Form**: https://datapulseai.co/contact
+- **Privacy Policy**: https://datapulseai.co/privacy-policy
 
-All five are client-side routes, so nginx must fall back to `index.html` for unknown paths or a hard refresh on any of them returns 404. `/services` is a legacy redirect to `/offerings`.
+All six are client-side routes, so nginx must fall back to `index.html` for unknown paths or a hard refresh on any of them returns 404. Two legacy redirects resolve in the browser the same way: `/services` → `/offerings` and `/privacy` → `/privacy-policy`.
 
 ---
 

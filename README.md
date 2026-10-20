@@ -11,13 +11,16 @@ A fullstack marketing website for DataPulse AI, a human and data science consult
 - **Smooth Animations**: Built with Framer Motion for scroll-reveal and page transitions
 - **Modern Stack**: React + Vite frontend with Express backend
 - **Accessibility**: Every text node measures at least 7.04:1 contrast against its background (WCAG AAA)
-- **Five Pages**:
+- **Site-wide Footer**: `© 2024–<year> DataPulse AI | All rights reserved | Privacy Policy` on every page, with the year range end derived at runtime so it never goes stale
+- **Six Pages**:
   - Home (`/`): Hero, the partnership statement with four performance indicators, "Examples of what we do" (18 examples filterable by industry), "Power behind our Offerings" (Ava & Ada), and a closing CTA
   - Offerings (`/offerings`): Advanced Analytics/Insights/AI services and Design/Product/Software services as tables, plus the startup partnership model
   - Use Cases (`/use-cases`): Six project case summaries, the performance indicators, and a partner logo carousel
   - About (`/about`): Who we are, Our Practice, Our Values, Our Leadership
   - Contact (`/contact`): Contact details and a form wired to the backend API
+  - Privacy Policy (`/privacy-policy`): The company's POPIA privacy policy in 13 numbered sections — linked from the footer, not from the top navigation
   - `/services` redirects to `/offerings` — the page was renamed and old links still resolve
+  - `/privacy` redirects to `/privacy-policy` — the shorthand people type and link to
 
 ## Tech Stack
 
@@ -90,9 +93,9 @@ DataPulse-Human-Services/
 │   ├── public/            # Static assets
 │   ├── src/
 │   │   ├── animations/    # AnimatedBackground (canvas)
-│   │   ├── components/    # Reusable components (Navigation, SEO, ScrollToTop)
+│   │   ├── components/    # Reusable components (Navigation, Footer, SEO, ScrollToTop)
 │   │   ├── constants/     # Shared data (animations.js, config.js, indicators.js)
-│   │   ├── pages/         # Page components (Home, Offerings, UseCases, About, Contact)
+│   │   ├── pages/         # Page components (Home, Offerings, UseCases, About, Contact, PrivacyPolicy)
 │   │   ├── styles/        # Global tokens, base styles, shared utilities
 │   │   ├── utils/         # structuredData.js (JSON-LD builders)
 │   │   ├── App.jsx        # Providers and route table
@@ -118,7 +121,7 @@ Defined as custom properties on `:root` in `client/src/styles/global.css`. **Tha
 
 ## Animated Background
 
-One static greyscale canvas (`z-index: -1`) drawing filled sine waves, connections between nearby particles, and the particles themselves. It reads identically on all five pages and does **not** change with scroll position or section — each page simply mounts its own `<AnimatedBackground />`. Particle count scales with viewport area.
+One static greyscale canvas (`z-index: -1`) drawing filled sine waves, connections between nearby particles, and the particles themselves. It reads identically on all six pages and does **not** change with scroll position or section — each page simply mounts its own `<AnimatedBackground />`. Particle count scales with viewport area.
 
 Note for anyone tuning it: the canvas is never fully cleared, so layer alphas accumulate over several seconds rather than rendering at their nominal value. See the warning in [TECHNICAL-DOCUMENTATION.md §3](TECHNICAL-DOCUMENTATION.md) before raising them.
 

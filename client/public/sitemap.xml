@@ -44,4 +44,12 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Privacy Policy Page -->
+  <url>
+    <loc>https://datapulseai.co/privacy-policy</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
 </urlset>

@@ -11,13 +11,15 @@ A marketing website for DataPulse AI, a human and data science consultancy that 
 
 ## What this is
 
-A five-page single-page application with a small Express API behind it. The only server-side behaviour is the contact form, which validates a submission and sends two emails (a notification to the business and a confirmation to the sender). There is **no database** and no user accounts — nothing is persisted.
+A six-page single-page application with a small Express API behind it. The only server-side behaviour is the contact form, which validates a submission and sends two emails (a notification to the business and a confirmation to the sender). There is **no database** and no user accounts — nothing is persisted.
 
 The site was substantially overhauled in October 2026: repositioned from a fixed-price "on-demand AI & software squad" to a consultancy, restyled from a cyan/blue/purple palette to a black-and-white greyscale system, and restructured (Services became Offerings, a new Use Cases page was added).
 
 A second content pass followed later the same month: Home dropped its "Strategic Initiatives are getting stuck…" problem framing in favour of the industry-filtered "Examples of what we do" grid moved up from Offerings, which also gained Telecommunications and Retail filters; About gained a "Who we are" section and a single content measure shared by every section; the headline performance indicators were centralised so Home and Use Cases show the same figures; and Contact gained a closing CTA.
 
 A third pass added depth to the same palette rather than changing it. The site had been entirely flat — one hairline per surface and no shadow anywhere — so tiles, the two Offerings tables, the leadership cards, the use-case icons and the contact form gained drop shadows with lighter borders, and the interactive chrome (Home's industry filter tabs and every closing-CTA button) gained a frosted-glass treatment. **No colour value changed**, and the "The Joy of Creation" and "For Startups" pills were left flat on purpose.
+
+A fourth pass added the legal chrome the site had been missing: a footer on every page (`© 2024–<year> DataPulse AI | All rights reserved | Privacy Policy`) and the `/privacy-policy` page it links to, reproducing the company's POPIA privacy policy from its Word document. The policy page breaks two site-wide habits deliberately — it is the only page with no closing CTA, and its clause numbering comes from CSS counters rather than typed-in numbers, so the numbers cannot drift when a clause is added or removed.
 
 ## Stack
 
@@ -40,7 +42,9 @@ Verified on Node v24.13.0 / npm 11.4.2.
 | `/offerings` | Two service catalogues as tables — "Advanced Analytics, Insights, and AI Services" and the "Design, Product, and Software Track" — plus the startup partnership model |
 | `/use-cases` | Track record: six project case summaries, the four performance indicators (shared with Home), and a looping partner logo carousel |
 | `/contact` | Contact details, the form that posts to the API, and a closing CTA |
+| `/privacy-policy` | The company's POPIA privacy policy — 13 numbered sections. Reached from the footer link on every page; deliberately **not** in the top navigation |
 | `/services` | Redirects to `/offerings` (the page was renamed; old links still resolve) |
+| `/privacy` | Redirects to `/privacy-policy` (the shorthand people type and link to) |
 
 ## Running it locally
 
@@ -69,11 +73,11 @@ Then open **http://localhost:3000**. The Express API runs on port 5000; Vite pro
 
 ## Current state
 
-**Working:** All five pages and the `/services` redirect. Navigation, routing, scroll-restoration, the canvas background animation, and all scroll-reveal animations. Per-page SEO metadata and JSON-LD structured data. The contact form submits, validates, and reports success or failure. Responsive from 375px up. Production build is clean with no console errors.
+**Working:** All six pages and both redirects (`/services`, `/privacy`). Navigation, the site-wide footer, routing, scroll-restoration, the canvas background animation, and all scroll-reveal animations. Per-page SEO metadata and JSON-LD structured data. The contact form submits, validates, and reports success or failure. Responsive from 375px up. Production build is clean with no console errors.
 
 **Visual design:** Greyscale, near-square corners, and depth carried by a dark drop shadow paired with a faint top-edge highlight — the highlight is what makes the lift visible at all, since a dark shadow on a pure-black ground is nearly invisible. Frosted glass is confined to the interactive chrome. The tokens, the rules behind where glass is and is not applied, and three traps worth knowing before editing shadows are in the design system section of [TECHNICAL-DOCUMENTATION.md](TECHNICAL-DOCUMENTATION.md).
 
-**Accessibility:** Every text node on every page measures at least **7.04:1** contrast against its background (WCAG AAA), verified programmatically. This was a hard requirement of the greyscale redesign. The translucent glass surfaces added later are included and measured against their composited value — the worst of them lands at 10.43:1, so the floor is still set by the opaque palette rather than by the glass.
+**Accessibility:** Every text node on every page measures at least **7.04:1** contrast against its background (WCAG AAA), verified programmatically. This was a hard requirement of the greyscale redesign. The translucent glass surfaces added later are included and measured against their composited value — the worst of them lands at 10.43:1, so the floor is still set by the opaque palette rather than by the glass. The footer and the privacy policy page were checked against the same bar and clear it: the worst new text node is the footer's muted legal line at **7.84:1** (`--grey-mid` over the footer's faint `rgba(255,255,255,0.015)` band, which composites to `#040404`), so the 7.04:1 floor is unchanged.
 
 **Needs configuration:** Email. Without `EMAIL_USER` and `EMAIL_PASS` the server logs a startup warning and the contact form still returns success to the user, but no email is sent — the submission exists only in the server log. See the configuration section of [TECHNICAL-DOCUMENTATION.md](TECHNICAL-DOCUMENTATION.md).
 

@@ -1,0 +1,222 @@
+.privacy-policy {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Hero Section — page-scoped so it beats .section-sm's padding shorthand */
+.privacy-policy .privacy-hero {
+  padding-top: var(--hero-offset);
+  padding-bottom: 2rem;
+}
+
+/* Same 900px measure as the prose blocks on the other pages, so the hero and
+   the policy below it share one left edge. */
+.privacy-hero-content,
+.policy-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.privacy-hero-content h1 {
+  font-size: clamp(1.75rem, 3.8vw, 3.25rem);
+  line-height: 1.2;
+}
+
+.privacy-intro {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  color: var(--text-secondary);
+  margin: 1.5rem 0 0;
+  line-height: 1.8;
+}
+
+/* Policy Body — no min-height: this section is naturally long */
+.privacy-policy .privacy-body {
+  padding-top: 0;
+  padding-bottom: 5rem;
+}
+
+.policy-content {
+  text-align: left;
+}
+
+/* Dense reference text, not marketing copy — set explicitly to override the
+   global `p` clamp, which is sized for a pitch. */
+.policy-text {
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+.policy-text:last-child {
+  margin-bottom: 0;
+}
+
+/* Numbering is driven by CSS counters rather than typed into the content, so
+   the clause numbers can never drift out of step if a clause is added. The
+   lists keep role="list" because `list-style: none` otherwise strips list
+   semantics in Safari/VoiceOver. */
+.policy-sections {
+  counter-reset: section;
+  list-style: none;
+  margin: 0;
+}
+
+.policy-section {
+  counter-increment: section;
+}
+
+.policy-section + .policy-section {
+  border-top: 1px solid var(--border-soft);
+  margin-top: 3rem;
+  padding-top: 3rem;
+}
+
+.policy-section-title {
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.75rem;
+}
+
+.policy-section-title::before {
+  content: counter(section) ". ";
+  color: var(--grey-mid);
+}
+
+.policy-clauses {
+  counter-reset: clause;
+  list-style: none;
+}
+
+.policy-clause {
+  counter-increment: clause;
+  position: relative;
+  padding-left: 3.25rem;
+}
+
+.policy-clause + .policy-clause {
+  margin-top: 1.5rem;
+}
+
+/* The hanging number sits in the gutter the padding-left opens up. Its
+   line-height matches .policy-text so it baselines with the first line. */
+.policy-clause::before {
+  content: counter(section) "." counter(clause);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--grey-mid);
+  font-variant-numeric: tabular-nums;
+}
+
+.policy-subclauses {
+  counter-reset: subclause;
+  list-style: none;
+  margin-top: 1.5rem;
+}
+
+.policy-subclause {
+  counter-increment: subclause;
+  position: relative;
+  padding-left: 3.75rem;
+}
+
+.policy-subclause + .policy-subclause {
+  margin-top: 1.5rem;
+}
+
+.policy-subclause::before {
+  content: counter(section) "." counter(clause) "." counter(subclause);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--grey-mid);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The global `* { padding: 0 }` reset strips list indentation, so the markers
+   need their gutter restored explicitly. */
+.policy-bullets {
+  list-style: disc outside;
+  padding-left: 1.25rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.policy-bullets li {
+  font-size: 0.9375rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.policy-bullets li::marker {
+  color: var(--grey-mid);
+}
+
+.policy-bullets li:last-child {
+  margin-bottom: 0;
+}
+
+.policy-bullets .policy-bullets {
+  list-style: circle outside;
+  margin: 0.5rem 0 0;
+}
+
+/* Unnumbered closing paragraph for a section — pulled back out of the clause
+   gutter, since it belongs to the section rather than to a clause. */
+.policy-note {
+  margin-top: 1.5rem;
+}
+
+.policy-content a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.policy-content a:hover {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .privacy-policy .privacy-hero {
+    padding-top: 130px;
+    padding-bottom: 1.5rem;
+    min-height: auto;
+  }
+
+  .policy-clause {
+    padding-left: 2.75rem;
+  }
+
+  .policy-subclause {
+    padding-left: 3.25rem;
+  }
+
+  .policy-section + .policy-section {
+    margin-top: 2.5rem;
+    padding-top: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Below this width the hanging numbers eat too much of the measure, so they
+     move above their clause instead of beside it. */
+  .policy-clause,
+  .policy-subclause {
+    padding-left: 0;
+  }
+
+  .policy-clause::before,
+  .policy-subclause::before {
+    position: static;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+}
